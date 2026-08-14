@@ -1,0 +1,10 @@
+// Exemplo simples para testar o interpretador.
+// Execute com: ./build/interpretador examples/exemplo1.lang
+
+x = 10;
+y = 20;
+print x + y;
+
+z = (x + y) * 2;
+print z;
+print z / 4;
