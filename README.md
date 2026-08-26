@@ -8,7 +8,7 @@ professor: [github.com/sergioaafreitas/COMP1](https://github.com/sergioaafreitas
 
 | Nome | Matrícula | GitHub |
 |------|-----------|--------|
-|  Arthur Souto Santos  | 222006570 | [@arthursouto09](https://github.com/arthursouto09 |
+|  Arthur Souto Santos  | 222006570 | [@arthursouto09](https://github.com/arthursouto09) |
 | Gabriel Guedes Fernandes | 232014656 | [@gabriel-ggf](https://github.com/gabriel-ggf) |
 | João Vitor Mendonça Merlin | 222006848 | [@jvopBR](https://github.com/jvopBR) |
 | Levi Evangelista Santos | 241012042 | [@leviaqui](https://github.com/leviaqui) |
