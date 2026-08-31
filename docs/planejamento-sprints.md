@@ -6,6 +6,7 @@ Preencham esta tabela a cada sprint — ela é usada nas entregas **P1** e **P2*
 Apresentações:
 - **P1:** 30 de setembro
 - **P2:** 09 de novembro
+- **Entrevista Final (T):** Semana de 30 de novembro
 
 ## Backlog geral
 
@@ -32,27 +33,15 @@ Apresentações:
 | Testes: Gramática e base | Teste: Levi e Arthur | |
 | Documentação da Sprint | Doc: Vitor | |
 
-**O que foi entregue:**
-
-**Dificuldades:**
-
-**Ajustes para a próxima sprint:**
-
 ---
 
 ## Sprint 2 — 30/08 a 05/09
 
 | Item | Responsável | Status |
 |------|-------------|--------|
-| Implementação: Scanner | Código: Gabriel e Vitor | |
-| Testes: Scanner | Teste: Levi e João Merlin | |
+| Implementação: Scanner | Código: Vitor e Gabriel | |
+| Testes: Scanner | Teste: João Merlin e Levi | |
 | Documentação da Sprint | Doc: Arthur | |
-
-**O que foi entregue:**
-
-**Dificuldades:**
-
-**Ajustes para a próxima sprint:**
 
 ---
 
@@ -60,15 +49,9 @@ Apresentações:
 
 | Item | Responsável | Status |
 |------|-------------|--------|
-| Implementação: Parser | Código: Vitor e Arthur | |
-| Testes: Parser | Teste: João Merlin e Gabriel | |
+| Implementação: Parser | Código: Arthur e Vitor | |
+| Testes: Parser | Teste: Gabriel e João Merlin | |
 | Documentação da Sprint | Doc: Levi | |
-
-**O que foi entregue:**
-
-**Dificuldades:**
-
-**Ajustes para a próxima sprint:**
 
 ---
 
@@ -76,15 +59,9 @@ Apresentações:
 
 | Item | Responsável | Status |
 |------|-------------|--------|
-| Implementação: AST e interpretador | Código: Arthur e Levi | |
-| Testes: AST e interpretador | Teste: Gabriel e Vitor | |
+| Implementação: AST e interpretador (base) | Código: Levi e Arthur | |
+| Testes: AST e interpretador (base) | Teste: Vitor e Gabriel | |
 | Documentação da Sprint | Doc: João Merlin | |
-
-**O que foi entregue:**
-
-**Dificuldades:**
-
-**Ajustes para a próxima sprint:**
 
 ---
 
@@ -97,15 +74,9 @@ Apresentações:
 
 | Item | Responsável | Status |
 |------|-------------|--------|
-| Implementação: Variáveis e print | Código: Levi e Gabriel | |
-| Testes: Variáveis e print | Teste: Vitor e João Merlin | |
-| Documentação da Sprint | Doc: Arthur | |
-
-**O que foi entregue:**
-
-**Dificuldades:**
-
-**Ajustes para a próxima sprint:**
+| Implementação: Variáveis e atribuição | Código: João Merlin e Levi | |
+| Testes: Variáveis e atribuição | Teste: Arthur e Vitor | |
+| Documentação da Sprint | Doc: Gabriel | |
 
 ---
 
@@ -113,15 +84,9 @@ Apresentações:
 
 | Item | Responsável | Status |
 |------|-------------|--------|
-| Implementação: Estruturas de controle | Código: Gabriel e Arthur | |
-| Testes: Estruturas de controle | Teste: João Merlin e Levi | |
+| Implementação: Comando print e op. lógicas | Código: Gabriel e João Merlin | |
+| Testes: Comando print e op. lógicas | Teste: Levi e Arthur | |
 | Documentação da Sprint | Doc: Vitor | |
-
-**O que foi entregue:**
-
-**Dificuldades:**
-
-**Ajustes para a próxima sprint:**
 
 ---
 
@@ -129,15 +94,9 @@ Apresentações:
 
 | Item | Responsável | Status |
 |------|-------------|--------|
-| Implementação: Funções e escopos | Código: Arthur e João Merlin | |
-| Testes: Funções e escopos | Teste: Levi e Vitor | |
-| Documentação da Sprint | Doc: Gabriel | |
-
-**O que foi entregue:**
-
-**Dificuldades:**
-
-**Ajustes para a próxima sprint:**
+| Implementação: Estruturas de controle | Código: Vitor e Gabriel | |
+| Testes: Estruturas de controle | Teste: João Merlin e Levi | |
+| Documentação da Sprint | Doc: Arthur | |
 
 ---
 
@@ -145,15 +104,9 @@ Apresentações:
 
 | Item | Responsável | Status |
 |------|-------------|--------|
-| Implementação: Tipos de dados | Código: João Merlin e Vitor | |
-| Testes: Tipos de dados | Teste: Gabriel e Arthur | |
+| Implementação: Funções e escopos | Código: Arthur e Vitor | |
+| Testes: Funções e escopos | Teste: Gabriel e João Merlin | |
 | Documentação da Sprint | Doc: Levi | |
-
-**O que foi entregue:**
-
-**Dificuldades:**
-
-**Ajustes para a próxima sprint:**
 
 ---
 
@@ -161,13 +114,32 @@ Apresentações:
 
 | Item | Responsável | Status |
 |------|-------------|--------|
-| Implementação: Revisão e erros | Código: Vitor e Levi | |
-| Testes: Testes finais e polimento | Teste: Gabriel e Arthur | |
+| Implementação: Tipos de dados adicionais | Código: Levi e Arthur | |
+| Testes: Tipos de dados adicionais | Teste: Vitor e Gabriel | |
 | Documentação da Sprint (Entrega P2) | Doc: João Merlin | |
 
-**O que foi entregue:**
+---
 
-**Dificuldades:**
+*Pausa na semana de 08/11.*
+*Entrega P2: 09 de novembro.*
 
-**Ajustes para a próxima sprint:**
+---
+
+## Sprint 10 — 16/11 a 22/11
+
+| Item | Responsável | Status |
+|------|-------------|--------|
+| Implementação: Tratamento de erros | Código: João Merlin e Levi | |
+| Testes: Tratamento de erros | Teste: Arthur e Vitor | |
+| Documentação da Sprint | Doc: Gabriel | |
+
+---
+
+## Sprint 11 — 23/11 a 29/11
+
+| Item | Responsável | Status |
+|------|-------------|--------|
+| Implementação: Refatoração final | Código: Gabriel e João Merlin | |
+| Testes: Bateria de testes finais | Teste: Levi e Arthur | |
+| Documentação: Fechamento para Entrevista | Doc: Vitor | |
 
