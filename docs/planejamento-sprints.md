@@ -97,9 +97,9 @@ Apresentações:
 
 | Item | Responsável | Status |
 |------|-------------|--------|
-| Implementação: Variáveis e print | Código: Levi e João Merlin | |
-| Testes: Variáveis e print | Teste: Vitor e Arthur | |
-| Documentação da Sprint | Doc: Gabriel | |
+| Implementação: Variáveis e print | Código: Levi e Gabriel | |
+| Testes: Variáveis e print | Teste: Vitor e João Merlin | |
+| Documentação da Sprint | Doc: Arthur | |
 
 **O que foi entregue:**
 
@@ -113,8 +113,8 @@ Apresentações:
 
 | Item | Responsável | Status |
 |------|-------------|--------|
-| Implementação: Estruturas de controle | Código: João Merlin e Gabriel | |
-| Testes: Estruturas de controle | Teste: Arthur e Levi | |
+| Implementação: Estruturas de controle | Código: Gabriel e Arthur | |
+| Testes: Estruturas de controle | Teste: João Merlin e Levi | |
 | Documentação da Sprint | Doc: Vitor | |
 
 **O que foi entregue:**
@@ -129,9 +129,9 @@ Apresentações:
 
 | Item | Responsável | Status |
 |------|-------------|--------|
-| Implementação: Funções e escopos | Código: Gabriel e Vitor | |
-| Testes: Funções e escopos | Teste: Levi e João Merlin | |
-| Documentação da Sprint | Doc: Arthur | |
+| Implementação: Funções e escopos | Código: Arthur e João Merlin | |
+| Testes: Funções e escopos | Teste: Levi e Vitor | |
+| Documentação da Sprint | Doc: Gabriel | |
 
 **O que foi entregue:**
 
@@ -145,8 +145,8 @@ Apresentações:
 
 | Item | Responsável | Status |
 |------|-------------|--------|
-| Implementação: Tipos de dados | Código: Vitor e Arthur | |
-| Testes: Tipos de dados | Teste: João Merlin e Gabriel | |
+| Implementação: Tipos de dados | Código: João Merlin e Vitor | |
+| Testes: Tipos de dados | Teste: Gabriel e Arthur | |
 | Documentação da Sprint | Doc: Levi | |
 
 **O que foi entregue:**
@@ -161,8 +161,8 @@ Apresentações:
 
 | Item | Responsável | Status |
 |------|-------------|--------|
-| Implementação: Revisão e erros | Código: Arthur e Levi | |
-| Testes: Testes finais e polimento | Teste: Gabriel e Vitor | |
+| Implementação: Revisão e erros | Código: Vitor e Levi | |
+| Testes: Testes finais e polimento | Teste: Gabriel e Arthur | |
 | Documentação da Sprint (Entrega P2) | Doc: João Merlin | |
 
 **O que foi entregue:**
@@ -170,3 +170,4 @@ Apresentações:
 **Dificuldades:**
 
 **Ajustes para a próxima sprint:**
+
