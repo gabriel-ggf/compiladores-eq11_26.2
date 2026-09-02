@@ -17,8 +17,7 @@ Interpretador desenvolvido para a disciplina de **Compiladores** (curso de Engen
 | Versão | Data | Descrição | Autor(es) |
 |:------:|:----:|-----------|-----------|
 | `0.1.0` | 26/08/2026 | Estruturação inicial do projeto, pipeline Flex/Bison e documentação base (C++). | Equipe 11 |
-| `0.2.0` | 01/09/2026 | Migração completa da base do projeto de C++ para C. | Equipe 11 |
-| `0.3.0` | 02/09/2026 | Atualização do ciclo de sprints e link para o planejamento. | Equipe 11 |
+| `0.2.0` | 02/09/2026 | Atualização do ciclo de sprints e link para o planejamento. | Equipe 11 |
 
 ## O que é este projeto
 
