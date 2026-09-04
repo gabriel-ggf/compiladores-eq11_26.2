@@ -30,6 +30,7 @@ Apresentações e Prazos:
 - [ ] Tratamento de erros léxicos/sintáticos/semânticos amigável
 - [ ] Testes automatizados (ver `tests/`)
 - [ ] Documentação final + preparação para a entrevista
+      
 
 ---
 
@@ -37,8 +38,8 @@ Apresentações e Prazos:
 
 | Item | Responsável | Status |
 |------|-------------|--------|
-| Implementação: Gramática e base | Código: Gabriel e João Merlin | |
-| Testes: Gramática e base | Teste: Levi e Arthur | |
+| Implementação | Código: Gabriel e João Merlin | |
+| Testes | Teste: Levi e Arthur | |
 | Documentação da Sprint | Doc: Vitor | |
 
 ---
@@ -47,8 +48,8 @@ Apresentações e Prazos:
 
 | Item | Responsável | Status |
 |------|-------------|--------|
-| Implementação: Scanner | Código: Vitor e Gabriel | |
-| Testes: Scanner | Teste: João Merlin e Levi | |
+| Implementação | Código: Vitor e Gabriel | |
+| Testes | Teste: João Merlin e Levi | |
 | Documentação da Sprint | Doc: Arthur | |
 
 ---
@@ -57,8 +58,8 @@ Apresentações e Prazos:
 
 | Item | Responsável | Status |
 |------|-------------|--------|
-| Implementação: Parser | Código: Arthur e Vitor | |
-| Testes: Parser | Teste: Gabriel e João Merlin | |
+| Implementação | Código: Arthur e Vitor | |
+| Testes | Teste: Gabriel e João Merlin | |
 | Documentação da Sprint | Doc: Levi | |
 
 ---
@@ -67,8 +68,8 @@ Apresentações e Prazos:
 
 | Item | Responsável | Status |
 |------|-------------|--------|
-| Implementação: AST e interpretador (base) | Código: Levi e Arthur | |
-| Testes: AST e interpretador (base) | Teste: Vitor e Gabriel | |
+| Implementação | Código: Levi e Arthur | |
+| Testes | Teste: Vitor e Gabriel | |
 | Documentação da Sprint (Entrega P1) | Doc: João Merlin | |
 
 ---
@@ -82,8 +83,8 @@ Apresentações e Prazos:
 
 | Item | Responsável | Status |
 |------|-------------|--------|
-| Implementação: Variáveis e atribuição | Código: João Merlin e Levi | |
-| Testes: Variáveis e atribuição | Teste: Arthur e Vitor | |
+| Implementação:  | Código: João Merlin e Levi | |
+| Testes | Teste: Arthur e Vitor | |
 | Documentação da Sprint | Doc: Gabriel | |
 
 ---
@@ -92,8 +93,8 @@ Apresentações e Prazos:
 
 | Item | Responsável | Status |
 |------|-------------|--------|
-| Implementação: Comando print e op. lógicas | Código: Gabriel e João Merlin | |
-| Testes: Comando print e op. lógicas | Teste: Levi e Arthur | |
+| Implementação | Código: Gabriel e João Merlin | |
+| Testes:  | Teste: Levi e Arthur | |
 | Documentação da Sprint | Doc: Vitor | |
 
 ---
@@ -102,8 +103,8 @@ Apresentações e Prazos:
 
 | Item | Responsável | Status |
 |------|-------------|--------|
-| Implementação: Estruturas de controle | Código: Vitor e Gabriel | |
-| Testes: Estruturas de controle | Teste: João Merlin e Levi | |
+| Implementação | Código: Vitor e Gabriel | |
+| Testes | Teste: João Merlin e Levi | |
 | Documentação da Sprint | Doc: Arthur | |
 
 ---
@@ -112,8 +113,8 @@ Apresentações e Prazos:
 
 | Item | Responsável | Status |
 |------|-------------|--------|
-| Implementação: Funções e escopos | Código: Arthur e Vitor | |
-| Testes: Funções e escopos | Teste: Gabriel e João Merlin | |
+| Implementação | Código: Arthur e Vitor | |
+| Testes  | Teste: Gabriel e João Merlin | |
 | Documentação da Sprint (Entrega P2) | Doc: Levi | |
 
 ---
@@ -122,8 +123,8 @@ Apresentações e Prazos:
 
 | Item | Responsável | Status |
 |------|-------------|--------|
-| Implementação: Tipos de dados adicionais | Código: Levi e Arthur | |
-| Testes: Tipos de dados adicionais | Teste: Vitor e Gabriel | |
+| Implementação  | Código: Levi e Arthur | |
+| Testes  | Teste: Vitor e Gabriel | |
 | Documentação da Sprint | Doc: João Merlin | |
 
 ---
@@ -137,8 +138,8 @@ Apresentações e Prazos:
 
 | Item | Responsável | Status |
 |------|-------------|--------|
-| Implementação: Tratamento de erros | Código: João Merlin e Levi | |
-| Testes: Tratamento de erros | Teste: Arthur e Vitor | |
+| Implementação  | Código: João Merlin e Levi | |
+| Testes  | Teste: Arthur e Vitor | |
 | Documentação da Sprint | Doc: Gabriel | |
 
 ---
@@ -147,7 +148,7 @@ Apresentações e Prazos:
 
 | Item | Responsável | Status |
 |------|-------------|--------|
-| Implementação: Refatoração final | Código: Gabriel e João Merlin | |
-| Testes: Bateria de testes finais | Teste: Levi e Arthur | |
-| Documentação: Fechamento para Entrevista | Doc: Vitor | |
+| Implementação | Código: Gabriel e João Merlin | |
+| Testes | Teste: Levi e Arthur | |
+| Documentação | Doc: Vitor | |
 
