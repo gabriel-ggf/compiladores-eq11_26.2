@@ -45,29 +45,30 @@ A linguagem atual (ponto de partida) suporta:
 - Comando de saída: `print x + 1;`
 - Comentários de linha: `// comentário`
 
+Isso é só o esqueleto inicial — a evolução da linguagem (estruturas de controle, funções, tipos, etc.) ainda vai ser definida em conjunto com o grupo.
+
 ## Estrutura do repositório
 
     .
-    ├── CMakeLists.txt
+    ├── CMakeLists.txt          # build (CMake + módulos FindFLEX/FindBISON)
     ├── src/
-    │   ├── main.c
+    │   ├── main.c              # ponto de entrada
     │   ├── lexer/
-    │   │   └── scanner.l
+    │   │   └── scanner.l       # analisador léxico (Flex)
     │   ├── parser/
-    │   │   └── parser.y
+    │   │   └── parser.y        # analisador sintático (Bison) — monta a AST
     │   ├── ast/
-    │   │   ├── ast.h
-    │   │   └── ast.c
+    │   │   ├── ast.h           # definição dos nós da AST
+    │   │   └── ast.c           # funções de criação e manipulação da AST
     │   └── interpreter/
     │       ├── interpreter.h
-    │       └── interpreter.c
+    │       └── interpreter.c   # percorre a AST e executa o programa
     ├── examples/
-    │   └── exemplo1.lang
-    ├── tests/
+    │   └── exemplo1.lang       # programa de exemplo na linguagem
+    ├── tests/                  # testes (ver tests/README.md)
     └── docs/
-        ├── decisoes-tecnicas.md
-        ├── planejamento-sprints.md
-        └── problemas-solucoes.md
+        ├── decisoes-tecnicas.md      # justificativa das escolhas técnicas
+        └── problemas-solucoes.md     # log de problemas e soluções (dev log)
 
 ## Como compilar e rodar
 
