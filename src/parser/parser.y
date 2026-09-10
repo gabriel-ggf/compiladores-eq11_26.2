@@ -1,68 +1,50 @@
 %{
-/*
- * Analisador sintático (parser) gerado pelo Bison.
- * Reconhece a gramática da linguagem e monta a AST (ver src/ast/AST.hpp)
- * conforme cada regra é reduzida.
- */
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include "ast/AST.hpp"
-
-extern int yylex();
-extern int yylineno;
-void yyerror(const char* s);
-
-// Raiz da AST resultante do parse; consumida em src/main.cpp.
-ProgramNode* rootNode = nullptr;
+    #include <stdio.h>
+    int yylex(void);
+    void yyerror(const char *mensagem);
 %}
 
-%union {
-    double dval;
-    char*  sval;
-    Node*  node;
-}
+%union { int intValue; }
 
-%token <dval> NUMBER
-%token <sval> IDENTIFIER
-%token PRINT
+%token <intValue> NUMBER
+%token PLUS MINUS TIMES DIVIDE MODULE RPAREN LPAREN
 
-%type <node> expr statement stmt_list
+%token EOL
 
-%left '+' '-'
-%left '*' '/'
+%left PLUS MINUS
+%left TIMES DIVIDE MODULE
+
+%type <intValue> expr
 
 %%
 
-program:
-    stmt_list { rootNode = static_cast<ProgramNode*>($1); }
+input:
+    %empty
+    | input line
     ;
 
-stmt_list:
-      /* vazio */          { $$ = new ProgramNode(); }
-    | stmt_list statement  {
-        static_cast<ProgramNode*>($1)->statements.push_back($2);
-        $$ = $1;
-      }
-    ;
-
-statement:
-      IDENTIFIER '=' expr ';' { $$ = new AssignNode($1, $3); free($1); }
-    | PRINT expr ';'          { $$ = new PrintNode($2); }
+line:
+    EOL
+    | expr {printf("Resultado: %d\n", $1);}
+    | error EOL {yyerrok;}
     ;
 
 expr:
-      expr '+' expr   { $$ = new BinaryOpNode('+', $1, $3); }
-    | expr '-' expr   { $$ = new BinaryOpNode('-', $1, $3); }
-    | expr '*' expr   { $$ = new BinaryOpNode('*', $1, $3); }
-    | expr '/' expr   { $$ = new BinaryOpNode('/', $1, $3); }
-    | '(' expr ')'    { $$ = $2; }
-    | NUMBER          { $$ = new NumberNode($1); }
-    | IDENTIFIER      { $$ = new VariableNode($1); free($1); }
+      expr PLUS expr    { $$ = $1 + $3; }
+    | expr MINUS expr   { $$ = $1 - $3; }
+    | expr TIMES expr   { $$ = $1 * $3; }
+    | expr DIVIDE expr  { if ($3 == 0) { yyerror("divisão por zero"); $$ = 0; } else { $$ = $1 / $3; } }
+    | expr MODULE expr  { $$ = $1 % $3; }
+    | LPAREN expr RPAREN{ $$ = $2; }
+    | NUMBER            { $$ = $1; }
     ;
 
 %%
 
-void yyerror(const char* s) {
-    fprintf(stderr, "Erro de sintaxe na linha %d: %s\n", yylineno, s);
+int main(void) {
+    return yyparse();
+}
+
+void yyerror(const char *s) {
+    fprintf(stderr, "Erro sintático: %s\n", s);
 }
