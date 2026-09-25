@@ -21,10 +21,24 @@
 "("                                  { return LPAREN; }
 ")"                                  { return RPAREN; }
 
-\n                                   { return EOL; }
+";"                                  { return SEMICOLON; }
 
-[ \t\r]+                            { /* espacos e quebras de linha: ignora */ }
+"if"                                 { return KW_IF; }
+"else"                               { return KW_ELSE; }
 
-.                                    { fprintf(stderr, "Erro léxico: %s\n", yytext); }
+"=="                                 { return EQUAL; }
+"!="                                 { return DIFF; }
+">="                                 { return GREATER_E; }
+"<="                                 { return LESS_E; }
+">"                                  { return GREATER_T; }
+"<"                                  { return LESS_T; }
+
+"||"                                 { return OR; }
+"&&"                                 { return AND; }
+"!"                                  { return NOT; }
+
+[ \t\r\n]+                           { /* espacos e quebras de linha: ignora */ }
+
+.                                    { fprintf(stderr, "[Erro Léxico] %s\n", yytext); }
 
 %%
