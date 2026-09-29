@@ -10,17 +10,20 @@
 
 %%
 
-\"([^"\\]|\\.)*\"                    { return STRING; }
-
-\'([^'\\]|\\.)\'                     { return CHAR; }
-
-[a-zA-Z_][a-zA-Z0-9_]*               { return IDENT; }
+char|double|float|int|long|short|signed|unsigned|void|struct|union|enum { return KW_TYPE; }
+const|volatile                      { return KW_QUALIFIER; }
+auto|extern|register|static|typedef { return KW_STORAGE; }
 
 [0-9]+(\.[0-9]+)?                    { yylval.intValue = atoi(yytext); return NUMBER; }
 
 "("                                  { return LPAREN; }
 ")"                                  { return RPAREN; }
-
+"{"                                  { return LBRACE; }
+"}"                                  { return RBRACE; }
+"["                                  { return LBRACK; }
+"]"                                  { return RBRACK; }
+","                                  { return COMMA; }
+"."                                  { return DOT; }
 ";"                                  { return SEMICOLON; }
 
 "if"                                 { return KW_IF; }
@@ -72,6 +75,10 @@
 "|"                                 { return BITWISE_OR; }
 "^"                                 { return BITWISE_XOR; }
 "~"                                 { return BITWISE_NOT; }
+
+\"([^"\\]|\\.)*\"                    { return STRING; }
+\'([^'\\]|\\.)\'                     { return CHAR; }
+[a-zA-Z_][a-zA-Z0-9_]*               { return IDENT; }
 
 [ \t\r\n]+                           { /* espacos e quebras de linha: ignora */ }
 
