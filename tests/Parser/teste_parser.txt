@@ -1,0 +1,20 @@
+2 + 2;
+3 * 3;
+2 - 7;
+7 % 3;
+2 == 3;
+1 >= 4;
+5 / 0;          // teste divisão por zero
+10 % 0;         // teste módulo por zero
+
+4 + ;           // inválido, falta operando
+== 5;           // inválido, operador no lugar errado
+
+if (2 > 1) 3 + 4;
+if (0) 1 - 1;
+
+if (3 == 3) 7 + 2; 
+if () 5;         // inválido, parênteses vazios
+if (4 < 5) else; // inválido, else sem comando
+
+if (1) if (0) 1; else 2;
