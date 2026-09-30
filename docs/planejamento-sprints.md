@@ -15,6 +15,7 @@ Apresentações e Prazos:
 | `0.1.0` | 26/08/2026 | Criação do planejamento inicial e distribuição de papéis. | Equipe 11 |
 | `0.2.0` | 01/09/2026 | Ajuste no calendário das sprints. | Equipe 11 |
 | `0.3.0` | 02/09/2026 | Ajuste para ciclo de Quarta a Terça. | Equipe 11 |
+| `0.4.0` | 30/09/2026 | Reorganizando as sprints. | Equipe 11 |
 
 ## Backlog geral
 
@@ -54,23 +55,13 @@ Apresentações e Prazos:
 
 ---
 
-## Sprint 3 — 09/09 a 15/09
+## Sprint 3 — 09/09 a 07/10
 
 | Item | Responsável | Status |
 |------|-------------|--------|
-| Implementação | Código: Arthur e Vitor | |
-| Testes | Teste: Gabriel e João Merlin | |
+| Implementação | Código: Gabriel e Vitor | |
+| Testes | Teste: Arthur e João Merlin | |
 | Documentação da Sprint | Doc: Levi | |
-
----
-
-## Sprint 4 — 16/09 a 22/09
-
-| Item | Responsável | Status |
-|------|-------------|--------|
-| Implementação | Código: Levi e Arthur | |
-| Testes | Teste: Vitor e Gabriel | |
-| Documentação da Sprint (Entrega P1) | Doc: João Merlin | |
 
 ---
 
@@ -79,7 +70,7 @@ Apresentações e Prazos:
 
 ---
 
-## Sprint 5 — 07/10 a 13/10
+## Sprint 4 — 07/10 a 13/10
 
 | Item | Responsável | Status |
 |------|-------------|--------|
@@ -89,7 +80,7 @@ Apresentações e Prazos:
 
 ---
 
-## Sprint 6 — 14/10 a 20/10
+## Sprint 5 — 14/10 a 20/10
 
 | Item | Responsável | Status |
 |------|-------------|--------|
@@ -99,7 +90,7 @@ Apresentações e Prazos:
 
 ---
 
-## Sprint 7 — 21/10 a 27/10
+## Sprint 6 — 21/10 a 27/10
 
 | Item | Responsável | Status |
 |------|-------------|--------|
@@ -109,7 +100,7 @@ Apresentações e Prazos:
 
 ---
 
-## Sprint 8 — 28/10 a 03/11
+## Sprint 7 — 28/10 a 03/11
 
 | Item | Responsável | Status |
 |------|-------------|--------|
@@ -119,7 +110,7 @@ Apresentações e Prazos:
 
 ---
 
-## Sprint 9 — 04/11 a 10/11
+## Sprint 8 — 04/11 a 10/11
 
 | Item | Responsável | Status |
 |------|-------------|--------|
@@ -134,7 +125,7 @@ Apresentações e Prazos:
 
 ---
 
-## Sprint 10 — 18/11 a 24/11
+## Sprint 9 — 18/11 a 24/11
 
 | Item | Responsável | Status |
 |------|-------------|--------|
@@ -144,7 +135,7 @@ Apresentações e Prazos:
 
 ---
 
-## Sprint 11 — 25/11 a 01/12
+## Sprint 10 — 25/11 a 01/12
 
 | Item | Responsável | Status |
 |------|-------------|--------|
