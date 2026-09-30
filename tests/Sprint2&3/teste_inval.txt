@@ -1,0 +1,13 @@
+5 / 0;          // teste divisão por zero
+10 % 0;         // teste módulo por zero
+4 + ;           // inválido
+== 5;           // inválido
+if () 5;        // inválido
+if (4 < 5) else; // inválido
+if if; // inválido 
+if if (20 > 10) 20; // inválido
+< ; // inválido
+(2 + 2; // inválido
+12 +> 3; // inválido
+(((( 7 == 2; // inválido
+2 >>> 1; // inválido
