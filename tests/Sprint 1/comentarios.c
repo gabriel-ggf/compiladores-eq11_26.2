@@ -28,4 +28,4 @@ int z = 20;
    int if else while return
 */
 
-"// isso é uma string"
+"// isso é uma string" // Teste para certificar que o scanner não identifica string como comentário

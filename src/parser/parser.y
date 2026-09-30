@@ -1,68 +1,86 @@
 %{
-/*
- * Analisador sintático (parser) gerado pelo Bison.
- * Reconhece a gramática da linguagem e monta a AST (ver src/ast/AST.hpp)
- * conforme cada regra é reduzida.
- */
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include "ast/AST.hpp"
+    #include <stdio.h>
 
-extern int yylex();
-extern int yylineno;
-void yyerror(const char* s);
-
-// Raiz da AST resultante do parse; consumida em src/main.cpp.
-ProgramNode* rootNode = nullptr;
+    int yylex(void);
+    void yyerror(const char *mensagem);
 %}
 
-%union {
-    double dval;
-    char*  sval;
-    Node*  node;
-}
+%union { int intValue; }
 
-%token <dval> NUMBER
-%token <sval> IDENTIFIER
-%token PRINT
+%token <intValue> NUMBER
+%token PLUS MINUS TIMES DIVIDE MODULE
+%token RPAREN LPAREN RBRACE LBRACE RBRACK LBRACK SEMICOLON DOT COMMA
+%token EQUAL DIFF GREATER_E GREATER_T LESS_E LESS_T AND OR NOT
+%token KW_IF KW_ELSE
 
-%type <node> expr statement stmt_list
+%token KW_BREAK KW_CASE KW_CONTINUE KW_DEFAULT KW_DO KW_FOR KW_GOTO KW_PACKED KW_RETURN KW_SIZEOF KW_SWITCH KW_WHILE
+%token IDENT CHAR STRING
+%token BITWISE_AND BITWISE_NOT BITWISE_OR BITWISE_XOR
+%token INCREMENT DECREMENT ARROW
+%token ADD_ASSIGN DIV_ASSIGN MOD_ASSIGN MUL_ASSIGN SUB_ASSIGN BITWISE_AND_ASSIGN BITWISE_OR_ASSIGN BITWISE_XOR_ASSIGN
 
-%left '+' '-'
-%left '*' '/'
+%token KW_TYPE KW_QUALIFIER KW_STORAGE
+
+%right KW_ELSE
+%left OR
+%left AND
+%left EQUAL DIFF
+%left GREATER_E GREATER_T LESS_E LESS_T
+%left PLUS MINUS
+%left TIMES DIVIDE MODULE
+%right NOT
+
+%type <intValue> expr stmt
+
+%start input
 
 %%
 
-program:
-    stmt_list { rootNode = static_cast<ProgramNode*>($1); }
-    ;
-
-stmt_list:
-      /* vazio */          { $$ = new ProgramNode(); }
-    | stmt_list statement  {
-        static_cast<ProgramNode*>($1)->statements.push_back($2);
-        $$ = $1;
+input:
+      %empty
+    | input stmt
+    | input error SEMICOLON     { 
+          fprintf(stderr, "[Erro Sintatico] Erro recuperado ate ';'\n");
+          yyerrok; 
+          yyclearin; 
       }
     ;
 
-statement:
-      IDENTIFIER '=' expr ';' { $$ = new AssignNode($1, $3); free($1); }
-    | PRINT expr ';'          { $$ = new PrintNode($2); }
+expr:
+      expr PLUS expr    { $$ = $1 + $3; }
+    | expr MINUS expr   { $$ = $1 - $3; }
+    | expr TIMES expr   { $$ = $1 * $3; }
+    | expr DIVIDE expr  { if ($3 == 0) { yyerror("Erro Semantico: divisão por zero"); $$ = 0; } else { $$ = $1 / $3; } }
+    | expr MODULE expr  { if ($3 == 0) { yyerror("Erro Semantico: divisão por zero"); $$ = 0; } else { $$ = $1 % $3; } }
+    | LPAREN expr RPAREN{ $$ = $2; }
+    | NUMBER            { $$ = $1; }
+    | expr EQUAL expr   { $$ = ($1 == $3); }
+    | expr DIFF expr    { $$ = ($1 != $3); }
+    | expr GREATER_E expr  { $$ = ($1 >= $3); }
+    | expr LESS_E expr     { $$ = ($1 <= $3); }
+    | expr GREATER_T expr  { $$ = ($1 > $3); }
+    | expr LESS_T expr     { $$ = ($1 < $3); }
+    | expr AND expr     { $$ = ($1 && $3); }
+    | expr OR expr      { $$ = ($1 || $3); }
+    | NOT expr          { $$ = (!$2); }
     ;
 
-expr:
-      expr '+' expr   { $$ = new BinaryOpNode('+', $1, $3); }
-    | expr '-' expr   { $$ = new BinaryOpNode('-', $1, $3); }
-    | expr '*' expr   { $$ = new BinaryOpNode('*', $1, $3); }
-    | expr '/' expr   { $$ = new BinaryOpNode('/', $1, $3); }
-    | '(' expr ')'    { $$ = $2; }
-    | NUMBER          { $$ = new NumberNode($1); }
-    | IDENTIFIER      { $$ = new VariableNode($1); free($1); }
-    ;
+stmt:
+      expr SEMICOLON                        { $$ = $1; printf("Resultado: %d\n", $1); }
+    | KW_IF LPAREN expr RPAREN stmt %prec KW_ELSE {
+        if ($3 != 0) {
+            printf("IF TRUE\n");
+        } else {
+            printf("IF FALSE\n");
+        }
+     }
 
 %%
 
-void yyerror(const char* s) {
-    fprintf(stderr, "Erro de sintaxe na linha %d: %s\n", yylineno, s);
+int main(void) {
+    return yyparse();
+}
+
+void yyerror(const char *s) {
+    fprintf(stderr, "ERRO - %s\n", s);
 }

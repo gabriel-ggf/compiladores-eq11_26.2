@@ -1,63 +1,87 @@
 %{
 #include <stdio.h>
+#include <stdlib.h>
+#include "parser.tab.h"
 %}
 
-%option yylineno
+%option noinput
+%option nounput
+%option noyywrap
 
 %%
 
-char|double|float|int|long|short|signed|unsigned|void|struct|union|enum {
-                                        printf("KW_TYPE(%s)\n", yytext);
-                                      }
-const|volatile                      { printf("KW_QUALIFIER(%s)\n", yytext); }
-auto|extern|register|static|typedef { printf("KW_STORAGE(%s)\n", yytext); }
+char|double|float|int|long|short|signed|unsigned|void|struct|union|enum { return KW_TYPE; }
+const|volatile                      { return KW_QUALIFIER; }
+auto|extern|register|static|typedef { return KW_STORAGE; }
 
-if                                   { printf("KW_IF\n"); }
-else                                 { printf("KW_ELSE\n"); }
-switch                               { printf("KW_SWITCH\n"); }
-case                                 { printf("KW_CASE\n"); }
-default                              { printf("KW_DEFAULT\n"); }
-while                                { printf("KW_WHILE\n"); }
-do                                   { printf("KW_DO\n"); }
-for                                  { printf("KW_FOR\n"); }
-break                                { printf("KW_BREAK\n"); }
-continue                            { printf("KW_CONTINUE\n"); }
-goto                                 { printf("KW_GOTO\n"); }
-return                               { printf("KW_RETURN\n"); }
-sizeof                               { printf("KW_SIZEOF\n"); }
-_Packed                              { printf("KW_PACKED\n"); }
+[0-9]+(\.[0-9]+)?                    { yylval.intValue = atoi(yytext); return NUMBER; }
 
-"//".*                               { /* comentario de linha */ }
+"("                                  { return LPAREN; }
+")"                                  { return RPAREN; }
+"{"                                  { return LBRACE; }
+"}"                                  { return RBRACE; }
+"["                                  { return LBRACK; }
+"]"                                  { return RBRACK; }
+","                                  { return COMMA; }
+"."                                  { return DOT; }
+";"                                  { return SEMICOLON; }
 
-"/*"([^*]|\*+[^*/])*\*+\/            { /* comentario de bloco */ }
+"if"                                 { return KW_IF; }
+"else"                               { return KW_ELSE; }
 
-\"([^"\\]|\\.)*\"                    { printf("STRING(%s)\n", yytext); }
+"switch"                              { return KW_SWITCH; }
+"case"                                { return KW_CASE; }
+"default"                             { return KW_DEFAULT; }
+"while"                               { return KW_WHILE; }
+"do"                                  { return KW_DO; }
+"for"                                 { return KW_FOR; }
+"break"                               { return KW_BREAK; }
+"continue"                            { return KW_CONTINUE; }
+"goto"                                { return KW_GOTO; }
+"return"                              { return KW_RETURN; }
+"sizeof"                              { return KW_SIZEOF; }
+"_Packed"                             { return KW_PACKED; }
 
-\'([^'\\]|\\.)\'                     { printf("CHAR(%s)\n", yytext); }
+"++"                                { return INCREMENT; }
+"--"                                { return DECREMENT; }
+"+="                                { return ADD_ASSIGN; }
+"-="                                { return SUB_ASSIGN; }
+"*="                                { return MUL_ASSIGN; }
+"/="                                { return DIV_ASSIGN; }
+"%="                                { return MOD_ASSIGN; }
+"&="                                { return BITWISE_AND_ASSIGN; }
+"^="                                { return BITWISE_XOR_ASSIGN; }
+"|="                                { return BITWISE_OR_ASSIGN; }
+"->"                                { return ARROW; }
 
-[a-zA-Z_][a-zA-Z0-9_]*               { printf("IDENT(%s)\n", yytext); }
+"=="                                 { return EQUAL; }
+"!="                                 { return DIFF; }
+">="                                 { return GREATER_E; }
+"<="                                 { return LESS_E; }
+">"                                  { return GREATER_T; }
+"<"                                  { return LESS_T; }
 
-[0-9]+(\.[0-9]+)?                    { printf("NUMBER(%s)\n", yytext); }
+"+"                                  { return PLUS; }
+"-"                                  { return MINUS; }
+"*"                                  { return TIMES; }
+"/"                                  { return DIVIDE; }
+"%"                                  { return MODULE; }
 
-"<<="|">>="|"=="|"!="|"<="|">="|"&&"|"||"|"++"|"--"|"+="|"-="|"*="|"/="|"%="|"&="|"^="|"|="|"->"|"<<"|">>" {
-                                        printf("OPERATOR(%s)\n", yytext);
-                                      }
+"||"                                 { return OR; }
+"&&"                                 { return AND; }
+"!"                                  { return NOT; }
 
-[+\-*/%=<>!&|^~]                     { printf("OPERATOR(%s)\n", yytext); }
+"&"                                 { return BITWISE_AND; }
+"|"                                 { return BITWISE_OR; }
+"^"                                 { return BITWISE_XOR; }
+"~"                                 { return BITWISE_NOT; }
 
-[{}()\[\];,.]                        { printf("PUNCT(%s)\n", yytext); }
+\"([^"\\]|\\.)*\"                    { return STRING; }
+\'([^'\\]|\\.)\'                     { return CHAR; }
+[a-zA-Z_][a-zA-Z0-9_]*               { return IDENT; }
 
 [ \t\r\n]+                           { /* espacos e quebras de linha: ignora */ }
 
-.                                    { printf("UNKNOWN(%s)\n", yytext); }
+.                                    { fprintf(stderr, "[Erro Léxico] %s\n", yytext); }
 
 %%
-
-int yywrap(void) {
-    return 1;
-}
-
-int main(void) {
-    yylex();
-    return 0;
-}

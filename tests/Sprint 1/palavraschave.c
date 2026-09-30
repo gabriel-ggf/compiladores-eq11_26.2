@@ -10,7 +10,7 @@ while do for
 break continue goto return
 sizeof _Packed
 
-integer
+integer // Testes de saída IDENT
 intValue
 whileLoop
 returnValue

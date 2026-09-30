@@ -10,5 +10,5 @@
 '\\'
 '\''
 
-''
+'' // Casos inválidos
 'ab'
