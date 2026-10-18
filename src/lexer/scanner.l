@@ -10,11 +10,22 @@
 
 %%
 
-char|double|float|int|long|short|signed|unsigned|void|struct|union|enum { return KW_TYPE; }
+char                                { yylval.stringVal = strdup(yytext); return TYPE_CHAR; }
+double                              { yylval.stringVal = strdup(yytext); return TYPE_DOUBLE; }
+float                               { yylval.stringVal = strdup(yytext); return TYPE_FLOAT; }
+int                                 { yylval.stringVal = strdup(yytext); return TYPE_INT; }
+long                                { yylval.stringVal = strdup(yytext); return TYPE_LONG; }
+short                               { yylval.stringVal = strdup(yytext); return TYPE_SHORT; }
+
+signed                              { return KW_SIGNED; }
+unsigned                            { return KW_SIGNED; }
+void                                { return KW_VOID; }
+struct                              { return KW_STRUCT; }
+union                               { return KW_UNION; }
+enum                                { return KW_ENUM; }
+
 const|volatile                      { return KW_QUALIFIER; }
 auto|extern|register|static|typedef { return KW_STORAGE; }
-
-[0-9]+(\.[0-9]+)?                    { yylval.intValue = atoi(yytext); return NUMBER; }
 
 "("                                  { return LPAREN; }
 ")"                                  { return RPAREN; }
@@ -76,9 +87,12 @@ auto|extern|register|static|typedef { return KW_STORAGE; }
 "^"                                 { return BITWISE_XOR; }
 "~"                                 { return BITWISE_NOT; }
 
-\"([^"\\]|\\.)*\"                    { return STRING; }
-\'([^'\\]|\\.)\'                     { return CHAR; }
-[a-zA-Z_][a-zA-Z0-9_]*               { return IDENT; }
+"="                                 { return ASSIGN; }
+
+[0-9]+(\.[0-9]+)?                    { yylval.intValue = atoi(yytext); return NUMBER; }
+'\\?.'                               { yylval.intValue = yytext[1]; return CHAR; }
+\"([^\"\\]|\\.)*\"                   { yylval.stringVal = strdup(yytext); return STRING; }
+[a-zA-Z_][a-zA-Z0-9_]*               { yylval.stringVal = strdup(yytext); return IDENT; }
 
 [ \t\r\n]+                           { /* espacos e quebras de linha: ignora */ }
 
