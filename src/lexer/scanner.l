@@ -10,6 +10,9 @@
 
 %%
 
+"//".*                               { /* ignora comentarios de linha */ }
+"/*"([^*]|\*+[^*/])*\*+\/            { /* ignora comentarios de bloco */ }
+
 char                                { yylval.stringVal = strdup(yytext); return TYPE_CHAR; }
 double                              { yylval.stringVal = strdup(yytext); return TYPE_DOUBLE; }
 float                               { yylval.stringVal = strdup(yytext); return TYPE_FLOAT; }
