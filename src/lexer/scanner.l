@@ -1,12 +1,24 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
-#include "parser.tab.h"
+
+#if defined(__has_include)
+  #if __has_include("parser.tab.h")
+    #include "parser.tab.h"
+  #elif __has_include("parser.hpp")
+    #include "parser.hpp"
+  #else
+    #include "parser.tab.h"
+  #endif
+#else
+  #include "parser.tab.h"
+#endif
 %}
 
 %option noinput
 %option nounput
 %option noyywrap
+%option yylineno
 
 %%
 
