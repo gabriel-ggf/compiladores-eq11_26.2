@@ -2,9 +2,10 @@
     #include <stdio.h>
     #include <stdlib.h>
     #include <string.h>
-
     int yylex(void);
     void yyerror(const char *mensagem);
+    extern FILE *yyin;
+    extern int yylineno;
 
     char current_type[32];
 %}
@@ -23,7 +24,6 @@
 
 %token KW_IF KW_ELSE
 %token KW_BREAK KW_CASE KW_CONTINUE KW_DEFAULT KW_DO KW_FOR KW_GOTO KW_PACKED KW_RETURN KW_SIZEOF KW_SWITCH KW_WHILE
-%token STRING
 %token BITWISE_AND BITWISE_NOT BITWISE_OR BITWISE_XOR
 %token INCREMENT DECREMENT ARROW
 %token ADD_ASSIGN DIV_ASSIGN MOD_ASSIGN MUL_ASSIGN SUB_ASSIGN BITWISE_AND_ASSIGN BITWISE_OR_ASSIGN BITWISE_XOR_ASSIGN
