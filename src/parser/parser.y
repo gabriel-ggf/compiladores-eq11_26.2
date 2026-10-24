@@ -4,7 +4,7 @@
     #include <string.h>
     int yylex(void);
     void yyerror(const char *mensagem);
-    extern FILE *yyin;
+     extern FILE *yyin;
     extern int yylineno;
 
     char current_type[32];
@@ -16,7 +16,7 @@
 }
 
 %token <intValue> NUMBER CHAR
-%token <stringVal> IDENT TYPE_CHAR TYPE_DOUBLE TYPE_FLOAT TYPE_INT TYPE_LONG TYPE_SHORT
+%token <stringVal> IDENT STRING TYPE_CHAR TYPE_DOUBLE TYPE_FLOAT TYPE_INT TYPE_LONG TYPE_SHORT
 
 %token PLUS MINUS TIMES DIVIDE MODULE
 %token RPAREN LPAREN RBRACE LBRACE RBRACK LBRACK SEMICOLON DOT COMMA ASSIGN
@@ -29,7 +29,9 @@
 %token ADD_ASSIGN DIV_ASSIGN MOD_ASSIGN MUL_ASSIGN SUB_ASSIGN BITWISE_AND_ASSIGN BITWISE_OR_ASSIGN BITWISE_XOR_ASSIGN
 %token KW_QUALIFIER KW_STORAGE KW_VOID KW_STRUCT KW_UNION KW_ENUM KW_SIGNED
 
-%right KW_ELSE
+%right ASSIGN ADD_ASSIGN SUB_ASSIGN MUL_ASSIGN DIV_ASSIGN MOD_ASSIGN
+%nonassoc LOWER_THAN_ELSE
+%nonassoc KW_ELSE
 %left OR
 %left AND
 %left BITWISE_OR
@@ -41,7 +43,7 @@
 %left TIMES DIVIDE MODULE
 %right NOT BITWISE_NOT INCREMENT DECREMENT
 
-%type <intValue> expr stmt
+%type <intValue> expr stmt compound_stmt selection_stmt iteration_stmt jump_stmt for_init for_cond for_step
 
 %start input
 
@@ -96,6 +98,18 @@ expr:
     | DECREMENT expr        { $$ = $2 - 1; }
     | expr INCREMENT        { $$ = $1; }
     | expr DECREMENT        { $$ = $1; }
+
+    /* Identificadores e Atribuições */
+    | IDENT                 { $$ = 0; free($1); }
+    | IDENT ASSIGN expr     { $$ = $3; free($1); }
+    | IDENT ADD_ASSIGN expr { $$ = $3; free($1); }
+    | IDENT SUB_ASSIGN expr { $$ = $3; free($1); }
+    | IDENT MUL_ASSIGN expr { $$ = $3; free($1); }
+    | IDENT DIV_ASSIGN expr { $$ = $3; free($1); }
+    | IDENT MOD_ASSIGN expr { $$ = $3; free($1); }
+
+    /* Literais String */
+    | STRING                { $$ = 0; free($1); }
     ;
 
 
@@ -110,7 +124,34 @@ stmt:
         $$ = 0; 
         printf("Declaração finalizada com sucesso.\n\n"); 
       }
-    | KW_IF LPAREN expr RPAREN stmt %prec KW_ELSE {
+    | compound_stmt
+    | selection_stmt
+    | iteration_stmt
+    | jump_stmt
+    | SEMICOLON {
+        $$ = 0;
+      }
+    ;
+
+compound_stmt:
+      LBRACE stmt_list RBRACE {
+        $$ = 0;
+        printf("Bloco de comandos ({ }) identificado.\n");
+      }
+    ;
+
+stmt_list:
+      %empty
+    | stmt_list stmt
+    | stmt_list error SEMICOLON {
+          fprintf(stderr, "[Erro Sintatico] Erro recuperado no bloco ate ';'\n");
+          yyerrok;
+          yyclearin;
+      }
+    ;
+
+selection_stmt:
+      KW_IF LPAREN expr RPAREN stmt %prec KW_ELSE {
         $$ = 0;
         if ($3 != 0) {
             printf("IF TRUE\n");
@@ -121,6 +162,52 @@ stmt:
     | KW_IF LPAREN expr RPAREN stmt KW_ELSE stmt {
         $$ = 0;
         printf("IF-ELSE executado\n");
+      }
+    ;
+
+iteration_stmt:
+      KW_WHILE LPAREN expr RPAREN stmt {
+        $$ = 0;
+        printf("Comando WHILE identificado.\n");
+      }
+    | KW_FOR LPAREN for_init SEMICOLON for_cond SEMICOLON for_step RPAREN stmt {
+        $$ = 0;
+        printf("Comando FOR identificado.\n");
+      }
+    ;
+
+for_init:
+      %empty                              { $$ = 0; }
+    | expr                                { $$ = $1; }
+    | type_specifier init_declarator_list { $$ = 0; }
+    ;
+
+for_cond:
+      %empty                              { $$ = 1; }
+    | expr                                { $$ = $1; }
+    ;
+
+for_step:
+      %empty                              { $$ = 0; }
+    | expr                                { $$ = $1; }
+    ;
+
+jump_stmt:
+      KW_RETURN SEMICOLON {
+        $$ = 0;
+        printf("Comando RETURN identificado.\n");
+      }
+    | KW_RETURN expr SEMICOLON {
+        $$ = $2;
+        printf("Comando RETURN identificado (valor: %d).\n", $2);
+      }
+    | KW_BREAK SEMICOLON {
+        $$ = 0;
+        printf("Comando BREAK identificado.\n");
+      }
+    | KW_CONTINUE SEMICOLON {
+        $$ = 0;
+        printf("Comando CONTINUE identificado.\n");
       }
     ;
 
