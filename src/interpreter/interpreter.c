@@ -8,57 +8,59 @@
 struct symbol {
     char *name;
     double value;
-    symbol *next;
+    struct symbol *next;
 };
 
 /*
- * C nao tem excecoes: onde a versao C++ lancava std::runtime_error, aqui a
- * mensagem vai para stderr e o programa encerra — mesmo efeito pratico de
- * uma excecao nao capturada.
- */
-static void erro_execucao(const char *formato, ...) {
-    va_list argumentos;
-    va_start(argumentos, formato);
-    vfprintf(stderr, formato, argumentos);
-    va_end(argumentos);
+ * C nao tem excecoes: onde a versao C++ lancava std::runtime_error, aqui a
+ * mensagem vai para stderr e o programa encerra — mesmo efeito pratico de
+ * uma excecao nao capturada.
+ */
+
+
+static void runtime_error(const char *format, ...) {
+    va_list args;
+    va_start(args, format);
+    vfprintf(stderr, format, args);
+    va_end(args);
     fputc('\n', stderr);
     exit(EXIT_FAILURE);
 }
 
-static char *copiar_texto(const char *texto) {
-    size_t tamanho = strlen(texto) + 1;
-    char *copia = malloc(tamanho);
-    if (copia == NULL) {
-        erro_execucao("Memoria insuficiente na tabela de simbolos");
+static char *copy_text(const char *text) {
+    size_t size = strlen(text) + 1;
+    char *copy = malloc(size);
+    if (copy == NULL) {
+        runtime_error("Out of memory in symbol table");
     }
-    memcpy(copia, texto, tamanho);
-    return copia;
+    memcpy(copy, text, size);
+    return copy;
 }
 
-static symbol *buscar_simbolo(interpreter *interp, const char *name) {
-    for (symbol *atual = interp->symbols; atual != NULL; atual = atual->next) {
-        if (strcmp(atual->name, name) == 0) {
-            return atual;
+static symbol *search_symbol(interpreter *interp, const char *name) {
+    for (symbol *current = interp->symbols; current != NULL; current = current->next) {
+        if (strcmp(current->name, name) == 0) {
+            return current;
         }
     }
     return NULL;
 }
 
-static void definir_simbolo(interpreter *interp, const char *name, double value) {
-    symbol *existente = buscar_simbolo(interp, name);
-    if (existente != NULL) {
-        existente->value = value;
+static void define_symbol(interpreter *interp, const char *name, double value) {
+    symbol *existing = search_symbol(interp, name);
+    if (existing != NULL) {
+        existing->value = value;
         return;
     }
 
-    symbol *novo = malloc(sizeof *novo);
-    if (novo == NULL) {
-        erro_execucao("Memoria insuficiente na tabela de simbolos");
+    symbol *new_symbol = malloc(sizeof *new_symbol);
+    if (new_symbol == NULL) {
+        runtime_error("Out of memory in symbol table");
     }
-    novo->name = copiar_texto(name);
-    novo->value = value;
-    novo->next = interp->symbols;
-    interp->symbols = novo;
+    new_symbol->name = copy_text(name);
+    new_symbol->value = value;
+    new_symbol->next = interp->symbols;
+    interp->symbols = new_symbol;
 }
 
 static double evaluate(interpreter *interp, node *n) {
@@ -67,11 +69,11 @@ static double evaluate(interpreter *interp, node *n) {
             return n->as.number.value;
 
         case NODE_VARIABLE: {
-            symbol *encontrado = buscar_simbolo(interp, n->as.variable.name);
-            if (encontrado == NULL) {
-                erro_execucao("Variavel nao definida: %s", n->as.variable.name);
+            symbol *found = search_symbol(interp, n->as.variable.name);
+            if (found == NULL) {
+                runtime_error("Undefined variable: %s", n->as.variable.name);
             }
-            return encontrado->value;
+            return found->value;
         }
 
         case NODE_BINARY_OP: {
@@ -83,28 +85,28 @@ static double evaluate(interpreter *interp, node *n) {
                 case '*': return left * right;
                 case '/':
                     if (right == 0.0) {
-                        erro_execucao("Divisao por zero");
+                        runtime_error("Division by zero");
                     }
                     return left / right;
                 default:
-                    erro_execucao("Operador desconhecido");
+                    runtime_error("Unknown operator");
             }
             break;
         }
 
         default:
-            erro_execucao("No invalido em contexto de expressao");
+            runtime_error("Invalid node in expression context");
     }
 
-    return 0.0; /* inalcancavel: erro_execucao encerra o programa */
+    return 0.0; /* unreachable: runtime_error terminates the program */
 }
 
 static void execute(interpreter *interp, node *n) {
     switch (n->type) {
         case NODE_ASSIGN:
-            definir_simbolo(interp,
-                            n->as.assign.name,
-                            evaluate(interp, n->as.assign.expr));
+            define_symbol(interp,
+                          n->as.assign.name,
+                          evaluate(interp, n->as.assign.expr));
             break;
 
         case NODE_PRINT:
@@ -112,7 +114,7 @@ static void execute(interpreter *interp, node *n) {
             break;
 
         default:
-            erro_execucao("Statement invalido");
+            runtime_error("Invalid statement");
     }
 }
 
@@ -121,10 +123,9 @@ void interpreter_init(interpreter *interp) {
 }
 
 void interpreter_run(interpreter *interp, node *program) {
-    /* Em C++ a assinatura exigia ProgramNode*; em C a checagem e em tempo
-       de execucao. */
+    /* In C++ the signature required ProgramNode*; in C the check is at runtime. */
     if (program == NULL || program->type != NODE_PROGRAM) {
-        erro_execucao("Raiz invalida: esperado um no de programa");
+        runtime_error("Invalid root: expected a program node");
     }
 
     for (size_t i = 0; i < program->as.program.count; i++) {
@@ -133,12 +134,12 @@ void interpreter_run(interpreter *interp, node *program) {
 }
 
 void interpreter_destroy(interpreter *interp) {
-    symbol *atual = interp->symbols;
-    while (atual != NULL) {
-        symbol *proximo = atual->next;
-        free(atual->name);
-        free(atual);
-        atual = proximo;
+    symbol *current = interp->symbols;
+    while (current != NULL) {
+        symbol *next = current->next;
+        free(current->name);
+        free(current);
+        current = next;
     }
     interp->symbols = NULL;
 }

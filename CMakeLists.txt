@@ -29,33 +29,28 @@ FLEX_TARGET(Scanner
 
 ADD_FLEX_BISON_DEPENDENCY(Scanner Parser)
 
-# Pipeline que roda hoje: scanner + parser. O main() esta em
-# src/parser/parser.y e o parser avalia as expressoes direto, sem AST.
-add_executable(interpretador
-    ${FLEX_Scanner_OUTPUTS}
-    ${BISON_Parser_OUTPUTS}
-)
-target_include_directories(interpretador PRIVATE ${GENERATED_DIR})
-
-# Nucleo em C puro: AST + interpretador (tree-walking).
+# Nucleo em C puro: AST + tabela de simbolos + interpretador (tree-walking).
 add_library(nucleo STATIC
     src/ast/ast.c
+    src/ast/table.c
     src/interpreter/interpreter.c
 )
 target_include_directories(nucleo PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
-# src/main.c ainda nao entra em nenhum executavel: ele e o ponto de entrada
-# da versao com AST, e hoje colidiria com o main() de src/parser/parser.y.
-# Fica compilado aqui para nao quebrar sem ninguem perceber. Quando o
-# parser passar a preencher root_node, basta juntar src/main.c e o alvo
-# nucleo ao executavel interpretador e remover este alvo.
-add_library(entrada OBJECT src/main.c)
-target_include_directories(entrada PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
+# Pipeline completo: scanner + parser (preenchem a AST) + main + nucleo.
+# O root_node e definido em src/parser/parser.y e usado em src/main.c.
+add_executable(interpretador
+    src/main.c
+    ${FLEX_Scanner_OUTPUTS}
+    ${BISON_Parser_OUTPUTS}
+)
+target_include_directories(interpretador PRIVATE ${GENERATED_DIR})
+target_link_libraries(interpretador PRIVATE nucleo)
 
 # Teste simples do nucleo convertido (ver tests/unit/).
 add_executable(teste_nucleo tests/unit/teste_ast_interpretador.c)
 target_link_libraries(teste_nucleo PRIVATE nucleo)
 
-foreach(alvo interpretador nucleo entrada teste_nucleo)
+foreach(alvo interpretador nucleo teste_nucleo)
     target_compile_options(${alvo} PRIVATE -Wall -Wextra)
 endforeach()

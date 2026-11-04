@@ -1,0 +1,8 @@
+x = 10;
+print x + 1;
+y = x * 2;
+print y;
+print (2 + 3) * 4 - 7 % 4;
+3.5 + 1;
+print z;
+print 2 * 3;

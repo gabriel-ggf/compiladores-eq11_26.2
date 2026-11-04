@@ -6,51 +6,52 @@
  * docs/decisoes-tecnicas.md.
  */
 
+
 #include "ast/ast.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#define CAPACIDADE_INICIAL 8
+#define INITIAL_CAPACITY 8
 
-static void *alocar(size_t tamanho) {
-    void *bloco = malloc(tamanho);
-    if (bloco == NULL) {
-        fprintf(stderr, "Memoria insuficiente ao montar a AST\n");
+static void *allocate(size_t size) {
+    void *block = malloc(size);
+    if (block == NULL) {
+        fprintf(stderr, "Out of memory while building AST\n");
         exit(EXIT_FAILURE);
     }
-    return bloco;
+    return block;
 }
 
-/* strdup nao e padrao C: copiamos na mao para manter o codigo portavel. */
-static char *copiar_texto(const char *texto) {
-    size_t tamanho = strlen(texto) + 1;
-    char *copia = alocar(tamanho);
-    memcpy(copia, texto, tamanho);
-    return copia;
+/* strdup não é padrão C: copiamos na mão para mante o código potável. */
+static char *copy_string(const char *text) {
+    size_t size = strlen(text) + 1;
+    char *copy = allocate(size);
+    memcpy(copy, text, size);
+    return copy;
 }
 
-static node *novo_no(node_type type) {
-    node *n = alocar(sizeof *n);
+static node *new_node(node_type type) {
+    node *n = allocate(sizeof *n);
     n->type = type;
     return n;
 }
 
 node *ast_new_number(double value) {
-    node *n = novo_no(NODE_NUMBER);
+    node *n = new_node(NODE_NUMBER);
     n->as.number.value = value;
     return n;
 }
 
 node *ast_new_variable(const char *name) {
-    node *n = novo_no(NODE_VARIABLE);
-    n->as.variable.name = copiar_texto(name);
+    node *n = new_node(NODE_VARIABLE);
+    n->as.variable.name = copy_string(name);
     return n;
 }
 
 node *ast_new_binary_op(char op, node *left, node *right) {
-    node *n = novo_no(NODE_BINARY_OP);
+    node *n = new_node(NODE_BINARY_OP);
     n->as.binary_op.op = op;
     n->as.binary_op.left = left;
     n->as.binary_op.right = right;
@@ -58,20 +59,20 @@ node *ast_new_binary_op(char op, node *left, node *right) {
 }
 
 node *ast_new_assign(const char *name, node *expr) {
-    node *n = novo_no(NODE_ASSIGN);
-    n->as.assign.name = copiar_texto(name);
+    node *n = new_node(NODE_ASSIGN);
+    n->as.assign.name = copy_string(name);
     n->as.assign.expr = expr;
     return n;
 }
 
 node *ast_new_print(node *expr) {
-    node *n = novo_no(NODE_PRINT);
+    node *n = new_node(NODE_PRINT);
     n->as.print.expr = expr;
     return n;
 }
 
 node *ast_new_program(void) {
-    node *n = novo_no(NODE_PROGRAM);
+    node *n = new_node(NODE_PROGRAM);
     n->as.program.statements = NULL;
     n->as.program.count = 0;
     n->as.program.capacity = 0;
@@ -83,16 +84,16 @@ void ast_program_add(node *program, node *statement) {
     program_node *p = &program->as.program;
 
     if (p->count == p->capacity) {
-        size_t nova_capacidade = (p->capacity == 0)
-            ? CAPACIDADE_INICIAL
+        size_t new_capacity = (p->capacity == 0)
+            ? INITIAL_CAPACITY
             : p->capacity * 2;
-        node **maior = realloc(p->statements, nova_capacidade * sizeof *maior);
-        if (maior == NULL) {
-            fprintf(stderr, "Memoria insuficiente ao montar a AST\n");
+        node **larger = realloc(p->statements, new_capacity * sizeof *larger);
+        if (larger == NULL) {
+            fprintf(stderr, "Out of memory while building AST\n");
             exit(EXIT_FAILURE);
         }
-        p->statements = maior;
-        p->capacity = nova_capacidade;
+        p->statements = larger;
+        p->capacity = new_capacity;
     }
 
     p->statements[p->count++] = statement;

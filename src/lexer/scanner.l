@@ -1,7 +1,22 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "parser.tab.h"
+
+
+/* strdup nao e padrao C (mesma decisao do ast.c): copia na mao.
+ * Necessario porque yytext e sobrescrito a cada token. */
+static char *copy_text(const char *text) {
+    size_t size = strlen(text) + 1;
+    char *copy = malloc(size);
+    if (copy == NULL) {
+        fprintf(stderr, "Out of memory in scanner\n");
+        exit(EXIT_FAILURE);
+    }
+    memcpy(copy, text, size);
+    return copy;
+}
 %}
 
 %option noinput
@@ -14,7 +29,7 @@ char|double|float|int|long|short|signed|unsigned|void|struct|union|enum { return
 const|volatile                      { return KW_QUALIFIER; }
 auto|extern|register|static|typedef { return KW_STORAGE; }
 
-[0-9]+(\.[0-9]+)?                    { yylval.intValue = atoi(yytext); return NUMBER; }
+[0-9]+(\.[0-9]+)?                    { yylval.num = strtod(yytext, NULL); return NUMBER; }
 
 "("                                  { return LPAREN; }
 ")"                                  { return RPAREN; }
@@ -41,6 +56,10 @@ auto|extern|register|static|typedef { return KW_STORAGE; }
 "return"                              { return KW_RETURN; }
 "sizeof"                              { return KW_SIZEOF; }
 "_Packed"                             { return KW_PACKED; }
+
+
+"print"                              { return KW_PRINT; }
+"="                                  { return ASSIGN; }
 
 "++"                                { return INCREMENT; }
 "--"                                { return DECREMENT; }
@@ -78,7 +97,7 @@ auto|extern|register|static|typedef { return KW_STORAGE; }
 
 \"([^"\\]|\\.)*\"                    { return STRING; }
 \'([^'\\]|\\.)\'                     { return CHAR; }
-[a-zA-Z_][a-zA-Z0-9_]*               { return IDENT; }
+[a-zA-Z_][a-zA-Z0-9_]*               { yylval.str = copy_text(yytext); return IDENT; }
 
 [ \t\r\n]+                           { /* espacos e quebras de linha: ignora */ }
 

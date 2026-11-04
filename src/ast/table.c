@@ -1,43 +1,55 @@
+#include "table.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "table.h"
 
-typedef struct Entry {
-    char *name;
-    double value;
-    struct Entry *next;
-} Entry;
+Symbol *table = NULL;
 
-static Entry *head = NULL;
+void insertSymbol(char *name, char *type) {
+    // Verifica se o símbolo já existe na tabela.
+    Symbol *s = table;
+    while (s) {
+        if (strcmp(s->name, name) == 0)
+            return;
+        s = s->next;
+    }
 
-static Entry *find(const char *name) {
-    for (Entry *e = head; e; e = e->next)
-        if (strcmp(e->name, name) == 0) return e;
+    Symbol *newSymbol = malloc(sizeof(Symbol));
+    if (newSymbol == NULL) {
+        fprintf(stderr, "Error: out of memory\n");
+        return;
+    }
+    snprintf(newSymbol->name, sizeof(newSymbol->name), "%s", name);
+    snprintf(newSymbol->type, sizeof(newSymbol->type), "%s", type);
+    newSymbol->next = NULL;
+
+    if (table == NULL) {
+        table = newSymbol;
+    } else {
+        Symbol *last = table;
+        while (last->next)
+            last = last->next;
+        last->next = newSymbol;
+    }
+}
+
+Symbol *searchSymbol(char *name) {
+    for (Symbol *s = table; s; s = s->next)
+        if (strcmp(s->name, name) == 0)
+            return s;
     return NULL;
 }
 
-void table_insert(const char *name, double value) {
-    Entry *e = find(name);
-    if (e) { e->value = value; return; }      // already exists: update
-    e = malloc(sizeof(Entry));
-    e->name = strdup(name);
-    e->value = value;
-    e->next = head;                            // insert at head (O(1))
-    head = e;
+void printTable(void) {
+    printf("\nSymbol Table:\n");
+    for (Symbol *s = table; s; s = s->next)
+        printf("Name: %s, Type: %s\n", s->name, s->type);
 }
 
-int table_search(const char *name, double *value) {
-    Entry *e = find(name);
-    if (!e) return 0;
-    *value = e->value;
-    return 1;
-}
-
-void table_free(void) {
-    while (head) {
-        Entry *next = head->next;
-        free(head->name);
-        free(head);
-        head = next;
+void freeTable(void) {
+    while (table) {
+        Symbol *next = table->next;
+        free(table);
+        table = next;
     }
 }
