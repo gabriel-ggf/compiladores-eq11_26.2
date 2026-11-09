@@ -53,4 +53,3 @@ target_link_libraries(teste_nucleo PRIVATE nucleo)
 
 foreach(alvo interpretador nucleo teste_nucleo)
     target_compile_options(${alvo} PRIVATE -Wall -Wextra)
-endforeach()

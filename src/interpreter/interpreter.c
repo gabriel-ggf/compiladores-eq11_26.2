@@ -203,4 +203,3 @@ void interpreter_destroy(interpreter *interp) {
         current = next;
     }
     interp->symbols = NULL;
-}

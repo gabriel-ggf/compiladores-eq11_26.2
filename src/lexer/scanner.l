@@ -105,5 +105,3 @@ auto|extern|register|static|typedef { return KW_STORAGE; }
 [ \t\r\n]+                           { /* espacos e quebras de linha: ignora */ }
 
 .                                    { fprintf(stderr, "[Erro Léxico] %s\n", yytext); }
-
-%%
