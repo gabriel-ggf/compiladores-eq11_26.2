@@ -25,7 +25,7 @@ static char *copy_text(const char *text) {
 
 %%
 
-char|double|float|int|long|short|signed|unsigned|void|struct|union|enum { return KW_TYPE; }
+char|double|float|int|long|short|signed|unsigned|void|struct|union|enum { yylval.str = copy_text(yytext); return KW_TYPE; }
 const|volatile                      { return KW_QUALIFIER; }
 auto|extern|register|static|typedef { return KW_STORAGE; }
 
@@ -95,9 +95,12 @@ auto|extern|register|static|typedef { return KW_STORAGE; }
 "^"                                 { return BITWISE_XOR; }
 "~"                                 { return BITWISE_NOT; }
 
-\"([^"\\]|\\.)*\"                    { return STRING; }
-\'([^'\\]|\\.)\'                     { return CHAR; }
+\"([^"\\]|\\.)*\"                    { yylval.str = copy_text(yytext); return STRING; }
+\'([^'\\]|\\.)\'                     { yylval.str = copy_text(yytext); return CHAR; }
 [a-zA-Z_][a-zA-Z0-9_]*               { yylval.str = copy_text(yytext); return IDENT; }
+
+"//".*                               { /* ignora comentario de linha unica */ }
+"/*"([^*]|\*+[^*/])*\*+"/"           { /* ignora comentario de bloco (multilinha) */ }
 
 [ \t\r\n]+                           { /* espacos e quebras de linha: ignora */ }
 

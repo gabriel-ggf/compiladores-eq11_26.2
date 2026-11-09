@@ -1,0 +1,8 @@
+int x = 10;
+x = 11;
+char y = 'a';
+if (x > 10){
+    x = x - 1;
+} else {
+    x = x + 1;
+}

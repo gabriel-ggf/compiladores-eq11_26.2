@@ -12,12 +12,10 @@ struct symbol {
 };
 
 /*
- * C nao tem excecoes: onde a versao C++ lancava std::runtime_error, aqui a
- * mensagem vai para stderr e o programa encerra — mesmo efeito pratico de
- * uma excecao nao capturada.
- */
-
-
+ * C nao tem excecoes: onde a versao C++ lancava std::runtime_error, aqui a
+ * mensagem vai para stderr e o programa encerra — mesmo efeito pratico de
+ * uma excecao nao capturada.
+ */
 static void runtime_error(const char *format, ...) {
     va_list args;
     va_start(args, format);
@@ -64,9 +62,19 @@ static void define_symbol(interpreter *interp, const char *name, double value) {
 }
 
 static double evaluate(interpreter *interp, node *n) {
+    if (n == NULL) return 0.0;
+
     switch (n->type) {
         case NODE_NUMBER:
             return n->as.number.value;
+
+        case NODE_CHAR:
+            /* Retorna o valor numerico ASCII do caractere (ex: 'a' = 97.0) */
+            return (double) n->as.char_val.value;
+
+        case NODE_STRING:
+            /* Tipagem estatica de string exige uma union no symbol. Retorna 0 por enquanto. */
+            return 0.0; 
 
         case NODE_VARIABLE: {
             symbol *found = search_symbol(interp, n->as.variable.name);
@@ -76,10 +84,19 @@ static double evaluate(interpreter *interp, node *n) {
             return found->value;
         }
 
+        case NODE_UNARY_OP: {
+            double expr = evaluate(interp, n->as.unary_op.expr);
+            if (n->as.unary_op.op == '!') return !expr;
+            if (n->as.unary_op.op == '-') return -expr;
+            runtime_error("Unknown unary operator");
+            return 0.0;
+        }
+
         case NODE_BINARY_OP: {
             double left = evaluate(interp, n->as.binary_op.left);
             double right = evaluate(interp, n->as.binary_op.right);
             switch (n->as.binary_op.op) {
+                /* Aritmetica */
                 case '+': return left + right;
                 case '-': return left - right;
                 case '*': return left * right;
@@ -88,8 +105,22 @@ static double evaluate(interpreter *interp, node *n) {
                         runtime_error("Division by zero");
                     }
                     return left / right;
+                case '%': 
+                    if ((long)right == 0) runtime_error("Division by zero in modulo");
+                    return (double)((long)left % (long)right);
+                
+                /* Relacionais e Logicos mapeados no parser.y */
+                case 'E': return left == right;  /* EQUAL */
+                case 'D': return left != right;  /* DIFF */
+                case '>': return left > right;
+                case '<': return left < right;
+                case 'G': return left >= right;  /* GREATER_E */
+                case 'L': return left <= right;  /* LESS_E */
+                case '&': return left && right;  /* AND */
+                case '|': return left || right;  /* OR */
+                
                 default:
-                    runtime_error("Unknown operator");
+                    runtime_error("Unknown binary operator");
             }
             break;
         }
@@ -98,19 +129,50 @@ static double evaluate(interpreter *interp, node *n) {
             runtime_error("Invalid node in expression context");
     }
 
-    return 0.0; /* unreachable: runtime_error terminates the program */
+    return 0.0;
 }
 
 static void execute(interpreter *interp, node *n) {
+    if (n == NULL) return;
+
     switch (n->type) {
         case NODE_ASSIGN:
-            define_symbol(interp,
-                          n->as.assign.name,
-                          evaluate(interp, n->as.assign.expr));
+            define_symbol(interp, n->as.assign.name, evaluate(interp, n->as.assign.expr));
             break;
 
         case NODE_PRINT:
             printf("%g\n", evaluate(interp, n->as.print.expr));
+            break;
+
+        case NODE_BLOCK:
+            for (size_t i = 0; i < n->as.block.count; i++) {
+                execute(interp, n->as.block.statements[i]);
+            }
+            break;
+
+        case NODE_IF:
+            /* Se a condicao for verdadeira (diferente de 0), executa if_branch */
+            if (evaluate(interp, n->as.if_stmt.condition)) {
+                execute(interp, n->as.if_stmt.if_branch);
+            } else if (n->as.if_stmt.else_branch != NULL) {
+                execute(interp, n->as.if_stmt.else_branch);
+            }
+            break;
+
+        case NODE_WHILE:
+            while (evaluate(interp, n->as.while_stmt.condition)) {
+                execute(interp, n->as.while_stmt.loop_body);
+            }
+            break;
+
+        /* Expressoes soltas que funcionam como comandos (ex: "x + 2;", "10;") */
+        case NODE_BINARY_OP:
+        case NODE_UNARY_OP:
+        case NODE_NUMBER:
+        case NODE_CHAR:
+        case NODE_STRING:
+        case NODE_VARIABLE:
+            evaluate(interp, n);
             break;
 
         default:
@@ -123,7 +185,6 @@ void interpreter_init(interpreter *interp) {
 }
 
 void interpreter_run(interpreter *interp, node *program) {
-    /* In C++ the signature required ProgramNode*; in C the check is at runtime. */
     if (program == NULL || program->type != NODE_PROGRAM) {
         runtime_error("Invalid root: expected a program node");
     }
