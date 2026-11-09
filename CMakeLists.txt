@@ -36,6 +36,7 @@ add_library(nucleo STATIC
     src/interpreter/interpreter.c
 )
 target_include_directories(nucleo PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
+target_link_libraries(nucleo PUBLIC m)
 
 # Pipeline completo: scanner + parser (preenchem a AST) + main + nucleo.
 # O root_node e definido em src/parser/parser.y e usado em src/main.c.

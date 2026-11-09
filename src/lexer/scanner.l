@@ -25,6 +25,9 @@ static char *copy_text(const char *text) {
 
 %%
 
+"//".*                               { /* comentarios de linha */ }
+"/*"([^*]|\*+[^*/])*\*+\/            { /* comentarios de bloco */ }
+
 char|double|float|int|long|short|signed|unsigned|void|struct|union|enum { return KW_TYPE; }
 const|volatile                      { return KW_QUALIFIER; }
 auto|extern|register|static|typedef { return KW_STORAGE; }

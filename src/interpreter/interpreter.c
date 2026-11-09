@@ -1,5 +1,6 @@
 #include "interpreter/interpreter.h"
 
+#include <math.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -88,6 +89,11 @@ static double evaluate(interpreter *interp, node *n) {
                         runtime_error("Division by zero");
                     }
                     return left / right;
+                case '%':
+                    if (right == 0.0) {
+                        runtime_error("Division by zero");
+                    }
+                    return fmod(left, right);
                 default:
                     runtime_error("Unknown operator");
             }
