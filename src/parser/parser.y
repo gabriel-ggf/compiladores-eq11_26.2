@@ -5,7 +5,6 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
-#include "ast/ast.h"
 #include "ast/table.h"
 
 int yylex(void);
@@ -90,4 +89,3 @@ expr:
 
 void yyerror(const char *s) {
     fprintf(stderr, "ERRO - %s\n", s);
-}
