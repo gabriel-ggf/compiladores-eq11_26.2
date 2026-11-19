@@ -1,0 +1,8 @@
+// Exemplo base adaptado para declaracao tipada
+double x = 10;
+double y = 20;
+print x + y;
+
+double z = (x + y) * 2;
+print z;
+print z / 4;

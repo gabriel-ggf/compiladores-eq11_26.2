@@ -1,0 +1,6 @@
+// Teste: comentarios de linha e bloco devem ser ignorados
+double x = 5; // isso e um comentario
+/* este comentario
+   tem multiplas linhas */
+double y = 10;
+print x + y; // deve imprimir 15

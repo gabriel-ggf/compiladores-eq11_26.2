@@ -134,3 +134,4 @@ expr:
 
 void yyerror(const char *s) {
     fprintf(stderr, "ERRO - %s\n", s);
+}
