@@ -1,0 +1,9 @@
+// Teste: multiplas variaveis e reatribuicao
+double x = 1;
+double y = 2;
+double z = x + y;
+print z;
+x = z * 3;
+print x;
+y = x - z;
+print y;

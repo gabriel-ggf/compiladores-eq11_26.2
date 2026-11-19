@@ -1,0 +1,2 @@
+// Teste: variavel nao declarada deve gerar erro semantico
+print x;

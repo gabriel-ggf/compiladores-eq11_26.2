@@ -1,0 +1,13 @@
+// Teste: estruturas condicionais if-else
+int x = 10;
+if (x > 5) {
+    print 1;
+} else {
+    print 0;
+}
+
+if (x == 20) {
+    print 99;
+} else {
+    print 42;
+}

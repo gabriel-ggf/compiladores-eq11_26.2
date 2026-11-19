@@ -1,0 +1,2 @@
+// Teste: expressao sintaticamente invalida (falta operando)
+4 + ;

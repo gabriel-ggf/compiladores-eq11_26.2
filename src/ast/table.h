@@ -6,8 +6,8 @@ extern "C" {
 #endif
 
 typedef struct symbol {
-    char name[32];
-    char type[16];
+    char *name;
+    char *type;
     struct symbol *next;
 } Symbol;
 

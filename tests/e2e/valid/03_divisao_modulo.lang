@@ -1,0 +1,7 @@
+// Teste: divisao e modulo
+double a = 10;
+double b = 3;
+print a / b;
+print a % b;
+double c = 20;
+print c % 7;
