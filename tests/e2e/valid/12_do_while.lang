@@ -1,0 +1,14 @@
+// Teste: do-while executa o corpo ao menos uma vez
+int i = 10;
+do {
+    printf("%d\n", i);
+    i++;
+} while (i < 3);
+
+int c = 0;
+int soma = 0;
+do {
+    soma += c;
+    c++;
+} while (c < 4);
+printf("%d\n", soma);

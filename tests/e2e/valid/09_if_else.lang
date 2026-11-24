@@ -1,0 +1,27 @@
+// Teste: if, else e encadeamento else-if
+int nota = 75;
+
+if (nota >= 90) {
+    printf("A\n");
+} else if (nota >= 70) {
+    printf("B\n");
+} else {
+    printf("C\n");
+}
+
+// if sem chaves, com um unico comando
+int x = 3;
+if (x > 0)
+    printf("positivo\n");
+
+// corpo que nao deve executar
+if (x > 10) {
+    printf("nunca\n");
+}
+
+// else ligado ao if mais proximo (dangling else)
+if (x > 0)
+    if (x > 100)
+        printf("maior que cem\n");
+    else
+        printf("entre um e cem\n");
