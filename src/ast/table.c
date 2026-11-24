@@ -5,22 +5,29 @@
 
 Symbol *table = NULL;
 
-void insertSymbol(char *name, char *type) {
-    // Verifica se o símbolo já existe na tabela.
+int insertSymbol(char *name, char *type) {
     Symbol *s = table;
     while (s) {
         if (strcmp(s->name, name) == 0)
-            return;
+            return 0;
         s = s->next;
     }
 
     Symbol *newSymbol = malloc(sizeof(Symbol));
     if (newSymbol == NULL) {
         fprintf(stderr, "Error: out of memory\n");
-        return;
+        exit(EXIT_FAILURE);
     }
-    snprintf(newSymbol->name, sizeof(newSymbol->name), "%s", name);
-    snprintf(newSymbol->type, sizeof(newSymbol->type), "%s", type);
+    
+    newSymbol->name = malloc(strlen(name) + 1);
+    newSymbol->type = malloc(strlen(type) + 1);
+    if (newSymbol->name == NULL || newSymbol->type == NULL) {
+        fprintf(stderr, "Error: out of memory\n");
+        exit(EXIT_FAILURE);
+    }
+    
+    strcpy(newSymbol->name, name);
+    strcpy(newSymbol->type, type);
     newSymbol->next = NULL;
 
     if (table == NULL) {
@@ -31,6 +38,8 @@ void insertSymbol(char *name, char *type) {
             last = last->next;
         last->next = newSymbol;
     }
+
+    return 1;
 }
 
 Symbol *searchSymbol(char *name) {
@@ -49,6 +58,8 @@ void printTable(void) {
 void freeTable(void) {
     while (table) {
         Symbol *next = table->next;
+        free(table->name);
+        free(table->type);
         free(table);
         table = next;
     }

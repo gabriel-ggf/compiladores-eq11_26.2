@@ -1,0 +1,6 @@
+// Teste: operacoes aritmeticas basicas com declaracao
+double a = 5;
+double b = 3;
+printf("%g\n", a + b);
+printf("%g\n", a - b);
+printf("%g\n", a * b);

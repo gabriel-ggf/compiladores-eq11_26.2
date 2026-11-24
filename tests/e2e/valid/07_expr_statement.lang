@@ -1,0 +1,13 @@
+// Teste: estruturas condicionais if-else
+int x = 10;
+if (x > 5) {
+    printf("%g\n", 1);
+} else {
+    printf("%g\n", 0);
+}
+
+if (x == 20) {
+    printf("%g\n", 99);
+} else {
+    printf("%g\n", 42);
+}

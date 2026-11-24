@@ -1,0 +1,7 @@
+// Teste: expressoes com ponto flutuante
+double a = 3.14;
+double b = 2.0;
+printf("%g\n", a * b);
+double c = 1;
+double d = 3;
+printf("%g\n", c / d);

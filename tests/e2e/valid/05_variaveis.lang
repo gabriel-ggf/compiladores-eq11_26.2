@@ -1,0 +1,9 @@
+// Teste: multiplas variaveis e reatribuicao
+double x = 1;
+double y = 2;
+double z = x + y;
+printf("%g\n", z);
+x = z * 3;
+printf("%g\n", x);
+y = x - z;
+printf("%g\n", y);

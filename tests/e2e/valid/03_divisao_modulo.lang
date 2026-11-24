@@ -1,0 +1,7 @@
+// Teste: divisao e modulo
+double a = 10;
+double b = 3;
+printf("%g\n", a / b);
+printf("%g\n", a % b);
+double c = 20;
+printf("%g\n", c % 7);

@@ -6,22 +6,19 @@
  * Fluxo: abre o arquivo -> Flex/Bison fazem analise lexica e sintatica e
  * constroem a AST (root_node) -> o interpretador percorre a AST e executa
  * o programa.
- *
- * Observacao: src/parser/parser.y ainda avalia as expressoes direto e tem
- * o proprio main(), entao este arquivo ainda nao e ligado ao executavel
- * final (ver CMakeLists.txt). Ele passa a ser o ponto de entrada quando o
- * parser passar a preencher root_node.
  */
 
 #include <stdio.h>
 #include <stdlib.h>
 
 #include "ast/ast.h"
+#include "ast/table.h"
 #include "interpreter/interpreter.h"
 
 extern int yyparse(void);
 extern FILE *yyin;
 extern node *root_node;
+extern int parse_errors;
 
 int main(int argc, char **argv) {
     if (argc < 2) {
@@ -39,8 +36,10 @@ int main(int argc, char **argv) {
     int resultado_parse = yyparse();
     fclose(arquivo);
 
-    if (resultado_parse != 0 || root_node == NULL) {
+    if (resultado_parse != 0 || parse_errors > 0 || root_node == NULL) {
         fprintf(stderr, "Falha ao analisar o programa.\n");
+        ast_free(root_node);
+        freeTable();
         return 1;
     }
 
@@ -49,6 +48,7 @@ int main(int argc, char **argv) {
     interpreter_run(&interp, root_node);
     interpreter_destroy(&interp);
     ast_free(root_node);
+    freeTable();
 
     return 0;
 }

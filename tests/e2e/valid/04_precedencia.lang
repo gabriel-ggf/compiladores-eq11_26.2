@@ -1,0 +1,5 @@
+// Teste: precedencia de operadores e parenteses
+printf("%g\n", 2 + 3 * 4);
+printf("%g\n", (2 + 3) * 4);
+printf("%g\n", 10 - 2 * 3 + 1);
+printf("%g\n", (10 - 2) * (3 + 1));
