@@ -1,0 +1,15 @@
+// Teste: os quatro tipos da linguagem e seus especificadores no printf
+int i = 42;
+double d = 3.5;
+float f = 1.5;
+char c = 'A';
+char *s = "texto";
+
+printf("%d\n", i);
+printf("%g\n", d);
+printf("%g\n", f);
+printf("%c\n", c);
+printf("%s\n", s);
+
+// print embutido: imprime os argumentos e quebra a linha
+print(i, " ", c, " ", s);
