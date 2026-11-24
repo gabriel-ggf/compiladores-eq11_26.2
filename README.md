@@ -19,7 +19,11 @@ Interpretador desenvolvido para a disciplina de **Compiladores** (curso de Engen
 | `0.1.0` | 26/08/2026 | Estruturação inicial do projeto, pipeline Flex/Bison e documentação base (C++). | Equipe 11 |
 | `0.2.0` | 02/09/2026 | Atualização do ciclo de sprints e link para o planejamento. | Equipe 11 |
 | `0.3.0` | 09/09/2026 | Implementação dos tokens essenciais no scanner.l e seus respectivos testes | Equipe 11 |
-
+| `0.4.0` | 26/10/2026 | Migração do núcleo (AST, interpretador e main) de C++ para C puro. | Equipe 11 |
+| `0.5.0` | 03/11/2026 | Tabela de símbolos e novos nós da AST (controle de fluxo, tipos, chamadas). | Equipe 11 |
+| `0.6.0` | 08/11/2026 | Pipeline completo: o parser monta a AST e o interpretador a executa. | Equipe 11 |
+| `0.7.0` | 18/11/2026 | Suíte de testes automatizados (`tests/run_tests.sh`) e CI no GitHub Actions. | Equipe 11 |
+| `0.8.0` | 24/11/2026 | Atualização geral da documentação para o estado atual do projeto. | Equipe 11 |
 
 ## O que é este projeto
 
@@ -38,37 +42,115 @@ O pipeline é o clássico de compiladores/interpretadores:
             ▼
       Interpretação       (C)         →  execução direta da AST
 
-A linguagem atual (ponto de partida) suporta:
+A análise semântica acontece em dois momentos: durante o parse, uma tabela de símbolos (`src/ast/table.c`) verifica declaração e redeclaração de variáveis; em tempo de execução, o interpretador mantém a própria tabela, com os valores já tipados.
 
-- Expressões aritméticas: `+ - * /`, com precedência e parênteses
-- Variáveis (todas numéricas, tipo `double`): `x = 10;`
-- Comando de saída: `print x + 1;`
-- Comentários de linha: `// comentário`
+## A linguagem
 
-Isso é só o esqueleto inicial — a evolução da linguagem (estruturas de controle, funções, tipos, etc.) ainda vai ser definida em conjunto com o grupo.
+A sintaxe é um subconjunto de C. Um programa pode ser escrito direto no nível do arquivo ou dentro de `int main() { ... }` — no momento `main` é a única função que pode ser definida.
+
+```c
+// Calcula o fatorial de 5 e mostra os pares ate 10
+int main() {
+    int n = 5;
+    int fat = 1;
+
+    for (int i = 1; i <= n; i++) {
+        fat *= i;
+    }
+
+    printf("fatorial de %d = %d\n", n, fat);
+
+    int k = 0;
+    while (k <= 10) {
+        if (k % 2 == 0) {
+            printf("%d ", k);
+        }
+        k++;
+    }
+
+    return 0;
+}
+```
+
+### Tipos
+
+| Declaração | Tipo interno |
+|---|---|
+| `int`, `long`, `short`, `signed`, `unsigned` | inteiro |
+| `float`, `double` | ponto flutuante |
+| `char` | caractere |
+| `char *` | string |
+
+Variáveis precisam ser declaradas antes do uso e não podem ser redeclaradas — os dois casos geram erro semântico ainda durante o parse.
+
+### Operadores
+
+- **Aritméticos:** `+` `-` `*` `/` `%`
+- **Comparação:** `==` `!=` `<` `>` `<=` `>=`
+- **Lógicos:** `&&` `||` `!`
+- **Unário:** `-` (negação)
+- **Atribuição:** `=` e os compostos `+=` `-=` `*=` `/=` `%=`
+- **Incremento/decremento:** `++x` `--x` `x++` `x--`
+
+Precedência e associatividade seguem as de C e estão declaradas em `src/parser/parser.y`.
+
+### Controle de fluxo
+
+`if` / `else`, `while`, `do ... while`, `for`, `break`, `continue`, `return` e blocos `{ }`.
+
+### Saída
+
+Duas funções embutidas:
+
+- `printf(formato, ...)` — aceita os especificadores `%d` `%i` `%f` `%g` `%c` `%s` e `%%`.
+- `print(a, b, ...)` — imprime os argumentos na sequência e quebra a linha no final.
+
+### Literais e comentários
+
+- Números inteiros e com ponto decimal (`10`, `3.14`).
+- Strings entre aspas duplas e caracteres entre aspas simples, com suporte aos escapes de nova linha, tabulação, retorno de carro, nulo, barra invertida e aspas.
+- Comentários de linha (`// ...`) e de bloco (`/* ... */`).
+- Linhas iniciadas por `#` (diretivas de pré-processador) são ignoradas pelo scanner.
+
+### Erros reportados
+
+| Tipo | Quando ocorre | Formato |
+|---|---|---|
+| Léxico | caractere desconhecido | `[Erro Léxico] <caractere>` |
+| Sintático | regra não reconhecida | `ERRO - ...`, com recuperação até o próximo `;` |
+| Semântico | variável não declarada ou já declarada, função não suportada | `ERRO - Erro Semantico: ...` |
+| Execução | divisão por zero, função indefinida, etc. | mensagem no `stderr` e código de saída diferente de zero |
 
 ## Estrutura do repositório
 
     .
-    ├── CMakeLists.txt          # build (CMake + módulos FindFLEX/FindBISON)
+    ├── CMakeLists.txt              # build (CMake + módulos FindFLEX/FindBISON)
+    ├── .github/workflows/ci.yml    # CI: compila e roda a suíte a cada push/PR
     ├── src/
-    │   ├── main.c              # ponto de entrada
+    │   ├── main.c                  # ponto de entrada
     │   ├── lexer/
-    │   │   └── scanner.l       # analisador léxico (Flex)
+    │   │   └── scanner.l           # analisador léxico (Flex)
     │   ├── parser/
-    │   │   └── parser.y        # analisador sintático (Bison) — monta a AST
+    │   │   └── parser.y            # analisador sintático (Bison) — monta a AST
     │   ├── ast/
-    │   │   ├── ast.h           # definição dos nós da AST
-    │   │   └── ast.c           # funções de criação e manipulação da AST
+    │   │   ├── ast.h / ast.c       # nós da AST e funções de criação/liberação
+    │   │   └── table.h / table.c   # tabela de símbolos do parser (análise semântica)
     │   └── interpreter/
     │       ├── interpreter.h
-    │       └── interpreter.c   # percorre a AST e executa o programa
+    │       └── interpreter.c       # percorre a AST e executa o programa
     ├── examples/
-    │   └── exemplo1.lang       # programa de exemplo na linguagem
-    ├── tests/                  # testes (ver tests/README.md)
+    │   └── exemplo1.lang           # programa de exemplo na linguagem
+    ├── tests/                      # suíte automatizada (ver tests/README.md)
+    │   ├── run_tests.sh            # runner dos testes
+    │   ├── e2e/valid/              # programas válidos + saída esperada
+    │   ├── e2e/invalid/            # programas com erro + tipo de erro esperado
+    │   └── unit/                   # teste unitário do núcleo (AST + interpretador)
     └── docs/
-        ├── decisoes-tecnicas.md      # justificativa das escolhas técnicas
-        └── problemas-solucoes.md     # log de problemas e soluções (dev log)
+        ├── decisoes-tecnicas.md    # justificativa das escolhas técnicas
+        ├── problemas-solucoes.md   # log de problemas e soluções (dev log)
+        ├── planejamento-sprints.md # cronograma, papéis e backlog
+        ├── ata-sprints/            # atas de cada sprint
+        └── modelos/                # modelos de ata, issue e PR
 
 ## Como compilar e rodar
 
@@ -99,19 +181,33 @@ O projeto precisa rodar em Windows, mas **a forma recomendada é via WSL (Window
     cmake -S . -B build
     cmake --build build
 
+São gerados dois executáveis em `build/`:
+
+- `interpretador` — o interpretador completo (scanner + parser + AST + interpretador)
+- `teste_nucleo` — teste unitário do núcleo, usado pela suíte de testes
+
 ### Executar
 
     ./build/interpretador examples/exemplo1.lang
 
 Saída esperada:
 
-    30
-    60
-    15
+    Dia
+    Teste
+
+## Testes
+
+A suíte completa roda com um comando a partir da raiz do repositório:
+
+    ./tests/run_tests.sh --build
+
+O `--build` recompila antes de testar e `--verbose` mostra o diff completo quando um caso falha. Os detalhes de cada categoria de teste e de como adicionar novos casos estão em [`tests/README.md`](tests/README.md).
+
+A mesma suíte roda automaticamente no **GitHub Actions** a cada `push` e cada *pull request*, em todas as branches (ver [`.github/workflows/ci.yml`](.github/workflows/ci.yml)).
 
 ## Metodologia e entregas
 
-O time segue **Scrum**, com sprints semanais de Quarta a Terça. O cronograma completo, responsáveis e backlog de cada semana estão detalhados no arquivo **[`docs/planejamento-sprints.md`](docs/planejamento-sprints.md)**. Datas conforme o Plano de Ensino (FGA0003 — Compiladores 1, T02, 2026/2):
+O time segue **Scrum**, com sprints semanais de Quarta a Terça. O cronograma completo, responsáveis e backlog de cada semana estão detalhados no arquivo **[`docs/planejamento-sprints.md`](docs/planejamento-sprints.md)**, e cada sprint tem sua ata em **[`docs/ata-sprints/`](docs/ata-sprints/)**. Datas conforme o Plano de Ensino (FGA0003 — Compiladores 1, T02, 2026/2):
 
 | Entrega | Formulário (prazo) | Apresentação/entrevista |
 |---------|---------------------|--------------------------|
