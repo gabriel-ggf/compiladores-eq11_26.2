@@ -133,13 +133,16 @@ if [ -d "$E2E_VALID_DIR" ]; then
             continue
         fi
 
-        if diff -q "$TMPOUT" "$expected_file" > /dev/null 2>&1; then
+        # --strip-trailing-cr: no Windows o executavel emite CRLF e os .expected
+        # sao checados com CRLF pelo git (core.autocrlf). Ignorar o CR final deixa
+        # a comparacao valer igual nos dois sistemas. No Linux nao muda nada.
+        if diff -q --strip-trailing-cr "$TMPOUT" "$expected_file" > /dev/null 2>&1; then
             pass "$name"
         else
             fail "$name" "saida diferente do esperado"
             if [ "$VERBOSE" -eq 1 ]; then
                 echo -e "    ${YELLOW}--- diff (esperado vs obtido) ---${RESET}"
-                diff "$expected_file" "$TMPOUT" | sed 's/^/    /' || true
+                diff --strip-trailing-cr "$expected_file" "$TMPOUT" | sed 's/^/    /' || true
             fi
         fi
     done
@@ -226,9 +229,12 @@ else
 60
 15"
     set +e
-    actual="$("$UNIT_BIN" 2>"$TMPERR")"
+    "$UNIT_BIN" > "$TMPOUT" 2>"$TMPERR"
     unit_exit=$?
     set -e
+    # tr -d '\r': mesma razao do --strip-trailing-cr acima. EXPECTED_UNIT e uma
+    # string do shell, sempre com LF, enquanto no Windows o binario emite CRLF.
+    actual="$(tr -d '\r' < "$TMPOUT")"
 
     if [ "$unit_exit" -ne 0 ]; then
         fail "teste_nucleo" "exit code $unit_exit"
