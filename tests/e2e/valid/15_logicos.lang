@@ -1,0 +1,16 @@
+// Teste: operadores logicos, negacao e avaliacao em curto-circuito
+printf("%d\n", 1 && 1);
+printf("%d\n", 1 && 0);
+printf("%d\n", 0 || 1);
+printf("%d\n", 0 || 0);
+printf("%d\n", !0);
+printf("%d\n", !5);
+
+int a = 5;
+printf("%d\n", a > 0 && a < 10);
+printf("%d\n", a < 0 || a > 100);
+
+// curto-circuito: o lado direito nao pode ser avaliado,
+// senao a divisao por zero abortaria a execucao
+printf("%d\n", 0 && 10 / 0);
+printf("%d\n", 1 || 10 / 0);

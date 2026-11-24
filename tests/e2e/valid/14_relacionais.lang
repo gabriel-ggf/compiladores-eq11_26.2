@@ -1,0 +1,15 @@
+// Teste: operadores relacionais devolvem 1 para verdadeiro e 0 para falso
+int a = 5;
+int b = 3;
+
+printf("%d\n", a > b);
+printf("%d\n", a < b);
+printf("%d\n", a >= 5);
+printf("%d\n", a <= 4);
+printf("%d\n", a == 5);
+printf("%d\n", a != 5);
+
+// comparacao envolvendo ponto flutuante
+double x = 2.5;
+printf("%d\n", x > 2);
+printf("%d\n", x == 2.5);
