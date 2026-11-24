@@ -16,21 +16,22 @@ Apresentações e Prazos:
 | `0.2.0` | 01/09/2026 | Ajuste no calendário das sprints. | Equipe 11 |
 | `0.3.0` | 02/09/2026 | Ajuste para ciclo de Quarta a Terça. | Equipe 11 |
 | `0.4.0` | 30/09/2026 | Reorganizando as sprints. | Equipe 11 |
+| `0.5.0` | 24/11/2026 | Backlog atualizado com o que já foi concluído. | Equipe 11 |
 
 ## Backlog geral
 
-- [ ] Definir a gramática completa da linguagem (EBNF)
-- [ ] Scanner: tokens básicos (números, identificadores, operadores)
-- [ ] Parser: expressões aritméticas
-- [ ] AST + interpretador: expressões aritméticas
-- [ ] Variáveis e atribuição
-- [ ] Comando `print`
-- [ ] Estruturas de controle (`if`/`else`, laços)
-- [ ] Funções / escopos
-- [ ] Tipos de dados (inteiro, ponto flutuante, string, booleano)
-- [ ] Tratamento de erros léxicos/sintáticos/semânticos amigável
-- [ ] Testes automatizados (ver `tests/`)
-- [ ] Documentação final + preparação para a entrevista
+- [ ] Definir a gramática completa da linguagem (EBNF) — a gramática existe em `src/parser/parser.y`, mas ainda não foi escrita em EBNF na documentação
+- [x] Scanner: tokens básicos (números, identificadores, operadores)
+- [x] Parser: expressões aritméticas
+- [x] AST + interpretador: expressões aritméticas
+- [x] Variáveis e atribuição — incluindo atribuição composta (`+=`, `-=`, `*=`, `/=`, `%=`) e `++`/`--`
+- [x] Comando `print` — `print(...)` e `printf(...)` como funções embutidas
+- [x] Estruturas de controle (`if`/`else`, laços) — `if`/`else`, `while`, `do...while`, `for`, `break` e `continue`
+- [ ] Funções / escopos — só a função `main` é aceita; não há funções do usuário nem escopos aninhados
+- [x] Tipos de dados (inteiro, ponto flutuante, string, booleano) — `int`, `float`/`double`, `char` e `char *` implementados; não há tipo booleano (comparações devolvem inteiro)
+- [x] Tratamento de erros léxicos/sintáticos/semânticos amigável — as três fases reportam erro, com recuperação até o próximo `;` (mensagens de execução ainda estão em inglês)
+- [x] Testes automatizados (ver `tests/`) — suíte em `tests/run_tests.sh` rodando no CI a cada push/PR
+- [ ] Documentação final + preparação para a entrevista — em andamento
       
 
 ---
