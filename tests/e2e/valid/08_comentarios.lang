@@ -3,4 +3,4 @@ double x = 5; // isso e um comentario
 /* este comentario
    tem multiplas linhas */
 double y = 10;
-print x + y; // deve imprimir 15
+printf("%g\n", x + y); // deve imprimir 15

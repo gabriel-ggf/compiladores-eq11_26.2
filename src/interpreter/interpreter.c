@@ -284,7 +284,12 @@ static runtime_value evaluate(interpreter *interp, node *n) {
                         return make_int(li / ri); /* divisao inteira como em C */
                     }
                 case '%':
-                    if (is_float) runtime_error("Invalid operands to binary %% (have double)");
+                    if (is_float) {
+                        long ld_i = (long)ld;
+                        long rd_i = (long)rd;
+                        if (rd_i == 0) runtime_error("Division by zero in modulo");
+                        return make_int(ld_i % rd_i);
+                    }
                     if (ri == 0) runtime_error("Division by zero in modulo");
                     return make_int(li % ri);
 
@@ -349,6 +354,18 @@ static runtime_value evaluate(interpreter *interp, node *n) {
                         putchar(fmt[i]);
                     }
                 }
+                return make_int(0);
+            } else if (strcmp(n->as.call.name, "print") == 0) {
+                for (size_t i = 0; i < n->as.call.arg_count; i++) {
+                    runtime_value arg = evaluate(interp, n->as.call.args[i]);
+                    switch (arg.type) {
+                        case TYPE_INT:    printf("%ld", arg.as.i); break;
+                        case TYPE_DOUBLE: printf("%g", arg.as.d); break;
+                        case TYPE_CHAR:   printf("%c", arg.as.c); break;
+                        case TYPE_STRING: printf("%s", arg.as.s != NULL ? arg.as.s : "(null)"); break;
+                    }
+                }
+                putchar('\n');
                 return make_int(0);
             }
             runtime_error("Undefined function: %s", n->as.call.name);

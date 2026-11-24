@@ -2,8 +2,8 @@
 double x = 1;
 double y = 2;
 double z = x + y;
-print z;
+printf("%g\n", z);
 x = z * 3;
-print x;
+printf("%g\n", x);
 y = x - z;
-print y;
+printf("%g\n", y);
