@@ -1,0 +1,3 @@
+// Teste: atribuir string a variavel inteira deve abortar em runtime
+int x = "texto";
+printf("%d\n", x);

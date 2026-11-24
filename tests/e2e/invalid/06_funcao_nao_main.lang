@@ -1,0 +1,4 @@
+// Teste: so a funcao main e suportada; outro nome e erro semantico
+int soma() {
+    return 1;
+}

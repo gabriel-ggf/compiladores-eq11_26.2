@@ -1,0 +1,3 @@
+// Teste: operador binario sobre string deve abortar em runtime
+char *s = "texto";
+printf("%g\n", s + 1);
