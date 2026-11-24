@@ -5,13 +5,13 @@
 extern "C" {
 #endif
 
-typedef struct symbol {
+typedef struct parser_symbol {
     char *name;
     char *type;
-    struct symbol *next;
+    struct parser_symbol *next;
 } Symbol;
 
-void insertSymbol(char *name, char *type);
+int insertSymbol(char *name, char *type);
 Symbol *searchSymbol(char *name);
 void printTable(void);
 void freeTable(void);

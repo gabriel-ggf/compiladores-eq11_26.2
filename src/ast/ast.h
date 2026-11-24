@@ -20,16 +20,30 @@
 #include <stddef.h>
 
 typedef enum {
+    TYPE_INT,
+    TYPE_DOUBLE,
+    TYPE_CHAR,
+    TYPE_STRING
+} data_type;
+
+typedef enum {
     NODE_NUMBER,
     NODE_VARIABLE,
     NODE_BINARY_OP,
     NODE_UNARY_OP,
+    NODE_VAR_DECL,
     NODE_ASSIGN,
-    NODE_PRINT,
+    NODE_INC_DEC,
+    NODE_CALL,
+    NODE_RETURN,
     NODE_PROGRAM,
     NODE_BLOCK,
     NODE_IF,
     NODE_WHILE,
+    NODE_DO_WHILE,
+    NODE_FOR,
+    NODE_BREAK,
+    NODE_CONTINUE,
     NODE_STRING,
     NODE_CHAR
 } node_type;
@@ -69,10 +83,6 @@ typedef struct {
 } assign_node;
 
 typedef struct {
-    node *expr;
-} print_node;
-
-typedef struct {
     node **statements;
     size_t count;
     size_t capacity;
@@ -85,6 +95,12 @@ typedef struct {
 } block_node;
 
 typedef struct {
+    char *name;
+    int op;
+    int is_prefix;
+} inc_dec_node;
+
+typedef struct {
     node *condition;
     node *if_branch;
     node *else_branch;
@@ -95,6 +111,30 @@ typedef struct {
     node *loop_body;
 } while_node;
 
+typedef struct {
+    node *init;
+    node *condition;
+    node *increment;
+    node *body;
+} for_node;
+
+typedef struct {
+    data_type var_type;
+    char *name;
+    node *init;
+} var_decl_node;
+
+typedef struct {
+    char *name;
+    node **args;
+    size_t arg_count;
+    size_t arg_capacity;
+} call_node;
+
+typedef struct {
+    node *expr;
+} return_node;
+
 struct node {
     node_type type;
     union {
@@ -102,12 +142,17 @@ struct node {
         variable_node  variable;
         binary_op_node binary_op;
         unary_op_node  unary_op;
+        var_decl_node  var_decl;
         assign_node    assign;
-        print_node     print;
+        inc_dec_node   inc_dec;
+        call_node      call;
+        return_node    return_stmt;
         program_node   program;
         block_node     block;
         if_node        if_stmt;
         while_node     while_stmt;
+        while_node     do_while_stmt;
+        for_node       for_stmt;
         string_node    string_val;
         char_node      char_val;
     } as;
@@ -117,13 +162,23 @@ node *ast_new_number(double value);
 node *ast_new_variable(const char *name);
 node *ast_new_binary_op(int op, node *left, node *right);
 node *ast_new_assign(const char *name, node *expr);
-node *ast_new_print(node *expr);
+node *ast_new_inc_dec(const char *name, int op, int is_prefix);
+node *ast_new_return(node *expr);
+node *ast_new_call(const char *name);
+void ast_call_add_arg(node *call, node *arg);
 node *ast_new_program(void);
 
 node *ast_new_unary_op(int op, node *expr);
+node *ast_new_do_while(node *loop_body, node *condition);
+node *ast_new_break(void);
+node *ast_new_continue(void);
 node *ast_new_if(node *condition, node *if_branch, node *else_branch);
 node *ast_new_while(node *condition, node *loop_body);
+node *ast_new_for(node *init, node *condition, node *increment, node *body);
 node *ast_block_add(node *block, node *stmt);
+
+data_type ast_type_from_string(const char *type_str);
+node *ast_new_var_decl(data_type var_type, const char *name, node *init);
 
 node *ast_new_string(const char *value);
 node *ast_new_char(char value);

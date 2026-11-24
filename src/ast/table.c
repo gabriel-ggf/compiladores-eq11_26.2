@@ -5,11 +5,11 @@
 
 Symbol *table = NULL;
 
-void insertSymbol(char *name, char *type) {
+int insertSymbol(char *name, char *type) {
     Symbol *s = table;
     while (s) {
         if (strcmp(s->name, name) == 0)
-            return;
+            return 0;
         s = s->next;
     }
 
@@ -38,6 +38,8 @@ void insertSymbol(char *name, char *type) {
             last = last->next;
         last->next = newSymbol;
     }
+
+    return 1;
 }
 
 Symbol *searchSymbol(char *name) {

@@ -70,10 +70,36 @@ node *ast_new_assign(const char *name, node *expr) {
     return n;
 }
 
-node *ast_new_print(node *expr) {
-    node *n = new_node(NODE_PRINT);
-    n->as.print.expr = expr;
+node *ast_new_inc_dec(const char *name, int op, int is_prefix) {
+    node *n = new_node(NODE_INC_DEC);
+    n->as.inc_dec.name = copy_string(name);
+    n->as.inc_dec.op = op;
+    n->as.inc_dec.is_prefix = is_prefix;
     return n;
+}
+
+node *ast_new_call(const char *name) {
+    node *n = new_node(NODE_CALL);
+    n->as.call.name = copy_string(name);
+    n->as.call.args = NULL;
+    n->as.call.arg_count = 0;
+    n->as.call.arg_capacity = 0;
+    return n;
+}
+
+void ast_call_add_arg(node *call, node *arg) {
+    call_node *c = &call->as.call;
+    if (c->arg_count == c->arg_capacity) {
+        size_t new_cap = (c->arg_capacity == 0) ? INITIAL_CAPACITY : c->arg_capacity * 2;
+        node **larger = realloc(c->args, new_cap * sizeof *larger);
+        if (larger == NULL) {
+            fprintf(stderr, "Out of memory while building AST\n");
+            exit(EXIT_FAILURE);
+        }
+        c->args = larger;
+        c->arg_capacity = new_cap;
+    }
+    c->args[c->arg_count++] = arg;
 }
 
 node *ast_new_program(void) {
@@ -134,6 +160,21 @@ node *ast_new_if(node *condition, node *if_branch, node *else_branch) {
     return n;
 }
 
+node *ast_new_do_while(node *loop_body, node *condition) {
+    node *n = new_node(NODE_DO_WHILE);
+    n->as.do_while_stmt.loop_body = loop_body;
+    n->as.do_while_stmt.condition = condition;
+    return n;
+}
+
+node *ast_new_break(void) {
+    return new_node(NODE_BREAK);
+}
+
+node *ast_new_continue(void) {
+    return new_node(NODE_CONTINUE);
+}
+
 node *ast_new_while(node *condition, node *loop_body) {
     node *n = new_node(NODE_WHILE);
     n->as.while_stmt.condition = condition;
@@ -141,13 +182,67 @@ node *ast_new_while(node *condition, node *loop_body) {
     return n;
 }
 
+node *ast_new_for(node *init, node *condition, node *increment, node *body) {
+    node *n = new_node(NODE_FOR);
+    n->as.for_stmt.init = init;
+    n->as.for_stmt.condition = condition;
+    n->as.for_stmt.increment = increment;
+    n->as.for_stmt.body = body;
+    return n;
+}
+
+node *ast_new_return(node *expr) {
+    node *n = new_node(NODE_RETURN);
+    n->as.return_stmt.expr = expr;
+    return n;
+}
+
+data_type ast_type_from_string(const char *type_str) {
+    if (strcmp(type_str, "char") == 0) {
+        return TYPE_CHAR;
+    }
+    if (strcmp(type_str, "float") == 0 || strcmp(type_str, "double") == 0) {
+        return TYPE_DOUBLE;
+    }
+    if (strcmp(type_str, "string") == 0) {
+        return TYPE_STRING;
+    }
+    return TYPE_INT; /* int, long, short, signed, unsigned */
+}
+
+node *ast_new_var_decl(data_type var_type, const char *name, node *init) {
+    node *n = new_node(NODE_VAR_DECL);
+    n->as.var_decl.var_type = var_type;
+    n->as.var_decl.name = copy_string(name);
+    n->as.var_decl.init = init;
+    return n;
+}
+
 node *ast_new_string(const char *value) {
     node *n = new_node(NODE_STRING);
-    // Removemos as aspas iniciais e finais durante a cópia para a AST
     size_t len = strlen(value);
-    n->as.string_val.value = malloc(len - 1);
-    strncpy(n->as.string_val.value, value + 1, len - 2);
-    n->as.string_val.value[len - 2] = '\0';
+    char *buf = allocate(len - 1);
+
+    size_t out = 0;
+    for (size_t i = 1; i + 1 < len; i++) {
+        if (value[i] == '\\' && i + 2 < len) {
+            i++;
+            switch (value[i]) {
+                case 'n':  buf[out++] = '\n'; break;
+                case 't':  buf[out++] = '\t'; break;
+                case 'r':  buf[out++] = '\r'; break;
+                case '0':  buf[out++] = '\0'; break;
+                case '\\': buf[out++] = '\\'; break;
+                case '"':  buf[out++] = '"';  break;
+                case '\'': buf[out++] = '\''; break;
+                default:   buf[out++] = value[i]; break;
+            }
+        } else {
+            buf[out++] = value[i];
+        }
+    }
+    buf[out] = '\0';
+    n->as.string_val.value = buf;
     return n;
 }
 
@@ -184,8 +279,21 @@ void ast_free(node *root) {
             ast_free(root->as.assign.expr);
             break;
 
-        case NODE_PRINT:
-            ast_free(root->as.print.expr);
+        case NODE_INC_DEC:
+            free(root->as.inc_dec.name);
+            break;
+
+        case NODE_CALL:
+            free(root->as.call.name);
+            for (size_t i = 0; i < root->as.call.arg_count; i++) {
+                ast_free(root->as.call.args[i]);
+            }
+            free(root->as.call.args);
+            break;
+
+        case NODE_VAR_DECL:
+            free(root->as.var_decl.name);
+            ast_free(root->as.var_decl.init);
             break;
 
         case NODE_PROGRAM:
@@ -202,6 +310,15 @@ void ast_free(node *root) {
             free(root->as.block.statements);
             break;
 
+        case NODE_DO_WHILE:
+            ast_free(root->as.do_while_stmt.condition);
+            ast_free(root->as.do_while_stmt.loop_body);
+            break;
+
+        case NODE_BREAK:
+        case NODE_CONTINUE:
+            break;
+
         case NODE_IF:
             ast_free(root->as.if_stmt.condition);
             ast_free(root->as.if_stmt.if_branch);
@@ -214,9 +331,20 @@ void ast_free(node *root) {
             ast_free(root->as.while_stmt.condition);
             ast_free(root->as.while_stmt.loop_body);
             break;
+        
+        case NODE_FOR:
+            ast_free(root->as.for_stmt.init);
+            ast_free(root->as.for_stmt.condition);
+            ast_free(root->as.for_stmt.increment);
+            ast_free(root->as.for_stmt.body);
+            break;
 
         case NODE_STRING:
             free(root->as.string_val.value);
+            break;
+
+        case NODE_RETURN:
+            ast_free(root->as.return_stmt.expr);
             break;
 
         case NODE_CHAR:
