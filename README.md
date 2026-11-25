@@ -1,4 +1,4 @@
-# Compiladores — Equipe 11 (2026.2)
+# Compiladores Turma 02 — Equipe 11 (2026.2)
 
 Interpretador desenvolvido para a disciplina de **Compiladores** (curso de Engenharia de Software), seguindo a proposta e o material de apoio do professor: [github.com/sergioaafreitas/COMP1](https://github.com/sergioaafreitas/COMP1).
 
