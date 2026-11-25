@@ -187,13 +187,11 @@ static runtime_value evaluate(interpreter *interp, node *n) {
     if (n == NULL) return make_int(0);
 
     switch (n->type) {
-        case NODE_NUMBER: {
-            double v = n->as.number.value;
-            if (v == (double)(long)v) {
-                return make_int((long)v);
+        case NODE_NUMBER:
+            if (n->as.number.is_float) {
+                return make_double(n->as.number.value);
             }
-            return make_double(v);
-        }
+            return make_int((long)n->as.number.value);
 
         case NODE_CHAR:
             return make_char(n->as.char_val.value);

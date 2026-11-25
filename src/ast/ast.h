@@ -60,6 +60,7 @@ typedef struct {
 
 typedef struct {
     double value;
+    int is_float;
 } number_node;
 
 typedef struct {
@@ -159,6 +160,7 @@ struct node {
 };
 
 node *ast_new_number(double value);
+node *ast_new_float(double value);
 node *ast_new_variable(const char *name);
 node *ast_new_binary_op(int op, node *left, node *right);
 node *ast_new_assign(const char *name, node *expr);

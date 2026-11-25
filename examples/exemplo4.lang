@@ -1,0 +1,46 @@
+#include <stdio.h>
+
+/* Exemplo: Algoritmos Numericos Integrados */
+int main(void) {
+
+    int n = 19;
+    int passos = 0;
+    printf("Sequencia de Collatz para %d: ", n);
+    while (n != 1) {
+        printf("%d ", n);
+        if (n % 2 == 0) {
+            n /= 2;
+        } else {
+            n = 3 * n + 1;
+        }
+        passos++;
+    }
+    printf("1 (total de %d passos)\n", passos);
+
+    int candidato = 29;
+    int eh_primo = 1;
+    for (int d = 2; d * d <= candidato; d++) {
+        if (candidato % d == 0) {
+            eh_primo = 0;
+            break;
+        }
+    }
+
+    if (eh_primo) {
+        printf("%d e um numero primo.\n", candidato);
+    } else {
+        printf("%d nao e primo.\n", candidato);
+    }
+
+    int original = 12345;
+    int temp = original;
+    int invertido = 0;
+    while (temp > 0) {
+        invertido = invertido * 10 + (temp % 10);
+        temp /= 10;
+    }
+    printf("Original: %d | Invertido: %d\n", original, invertido);
+
+    return 0;
+    printf("Codigo apos o return nunca deve ser executado.\n");
+}

@@ -39,6 +39,14 @@ static node *new_node(node_type type) {
 node *ast_new_number(double value) {
     node *n = new_node(NODE_NUMBER);
     n->as.number.value = value;
+    n->as.number.is_float = (value != (double)(long)value);
+    return n;
+}
+
+node *ast_new_float(double value) {
+    node *n = new_node(NODE_NUMBER);
+    n->as.number.value = value;
+    n->as.number.is_float = 1;
     return n;
 }
 

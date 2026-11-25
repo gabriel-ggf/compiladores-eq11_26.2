@@ -16,7 +16,7 @@ Apresentações e Prazos:
 | `0.2.0` | 01/09/2026 | Ajuste no calendário das sprints. | Equipe 11 |
 | `0.3.0` | 02/09/2026 | Ajuste para ciclo de Quarta a Terça. | Equipe 11 |
 | `0.4.0` | 30/09/2026 | Reorganizando as sprints. | Equipe 11 |
-| `0.5.0` | 24/11/2026 | Backlog atualizado com o que já foi concluído. | Equipe 11 |
+| `0.5.0` | 24/11/2026 | Backlog atualizado com o que já foi concluído e reorganização das sprints. | Equipe 11 |
 
 ## Backlog geral
 
@@ -35,6 +35,24 @@ Apresentações e Prazos:
       
 
 ---
+
+## Sprints Realizadas
+
+| Nome | Período | Entregas | Status |
+| ---- | ------- | -------- | ------ |
+| Sprint 1 | 26/08 - 02/09 | - Inicialização do Repositório.<br>- Construção inicial do arquivo de análise léxica. | Concluido |
+| Sprint 2 | 02/09 - 09/09 | - Construção inicla do arquivo da análise sintática (Operadores básicos).  | Concluido |
+| Sprint 3 | 09/09 - 07/10 | - Desenvolvimento da análise sintática (Mais operadores).<br>- Adaptação do scanner para ligação com o parser.<br>- Documentação de processos e decisões.<br>- Reorganização interna da equipe.<br>- Preparação para a apresentação P1. | Concluido |
+| Sprint 4 | 07/10 - 14/10 | - Desenvolvimento da análise sintática (loops, variáveis, condicionais).<br>- Atualização de documentações. | Concluido |
+| Sprint 5 | 14/10 - 28/10 | - Desevolvimento da AST, tabela de símbolos e interpretador.<br>- Conversão de arquivos de C++ para C.<br>- Preparação para a apresentação P2. | Concluido |
+| Sprint 6 | 28/10 - 11/11 | - Ligação entre os arquivos de análise léxica, sintática, semântica e interpretador.<br>- Desenvolvimento de mais casos de testes. | Concluido |
+| Sprint 7 | 11/11 - 18/11 | - Automatização dos casos de teste.<br>- Expansão da análise semântica para incluir mais tokens. | Concluido |
+| Sprint 8 | 18/11 - 27/11 | - Atualização final na documentação.<br>- Correção de bugs.<br>- Otimização do código. | Em Andamento |
+
+> O periodo de cada sprint foi variado devido a diferentes fatores. Os principais foram entregas da disciplina e dificuldade entre alinhamento de atividades entre os membros da equipe, sendo o principal caso a Sprint 3. Algumas sprints tiveram um escopo maior e tiveram que ser espandidas por dificuldades técnicas.
+> Algumas entregas foram extendidas ou atrasados, suas datas podem não está alinhadas com as issues ou pull requests.
+
+<!--
 
 ## Sprint 1 — 26/08 a 01/09
 
@@ -144,3 +162,4 @@ Apresentações e Prazos:
 | Testes | Teste: Levi e Arthur | |
 | Documentação | Doc: Vitor | |
 
+-->

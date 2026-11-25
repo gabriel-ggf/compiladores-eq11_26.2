@@ -33,7 +33,8 @@ char|double|float|int|long|short|signed|unsigned { yylval.str = copy_text(yytext
 const|volatile                      { return KW_QUALIFIER; }
 auto|extern|register|static|typedef { return KW_STORAGE; }
 
-[0-9]+(\.[0-9]+)?                    { yylval.num = strtod(yytext, NULL); return NUMBER; }
+[0-9]+\.[0-9]+                       { yylval.num = strtod(yytext, NULL); return FLOAT_NUMBER; }
+[0-9]+                               { yylval.num = strtod(yytext, NULL); return NUMBER; }
 
 "("                                  { return LPAREN; }
 ")"                                  { return RPAREN; }

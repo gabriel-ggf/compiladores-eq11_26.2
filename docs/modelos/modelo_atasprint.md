@@ -17,22 +17,16 @@
 
 ## Entregas da Sprint
 
-- [Item 1] : Concluido
-- [Item 2] : Em andamento
-- [Item 3] : Impedido/Cancelado
+- [Item 1] : *Concluido*
+- [Item 2] : *Em andamento*
+- [Item 3] : *Impedido/Cancelado*
 
 ## Principais Discussões, Alinhamentos e Dificuldades
 
 [Descreva pontos discutidos, como decisões técnicas, alinhamentos ou desejos contraditórios entre os membros, e dificuldades durante a sprint, incluindo causa, consequência e como foi superada, caso possível.]
 
-- [Ponto 1]:
+- **[Ponto 1]:** Descrição do Ponto 1
 
-    Descrição do Ponto 1
+- **[Ponto 2]:** Descrição do Ponto 2
 
-- [Ponto 2]:
-
-    Descrição do Ponto 2
-
-- [Dificuldade 1]:
-
-    Descrição da Dificuldade 1
+- **[Dificuldade 1]:** Descrição da Dificuldade 1

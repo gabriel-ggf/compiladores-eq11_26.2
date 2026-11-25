@@ -48,7 +48,7 @@ static node *make_compound_assign(const char *name, int op, node *rhs) {
     node  *n;
 }
 
-%token <num> NUMBER
+%token <num> NUMBER FLOAT_NUMBER
 %token <str> IDENT
 %token <str> KW_TYPE
 %token <str> STRING CHAR
@@ -309,6 +309,7 @@ expr:
     | MINUS expr %prec UMINUS { $$ = ast_new_unary_op('-', $2); }
     | LPAREN expr RPAREN     { $$ = $2; }
     | NUMBER                 { $$ = ast_new_number($1); }
+    | FLOAT_NUMBER           { $$ = ast_new_float($1); }
     | STRING                 { $$ = ast_new_string($1); free($1); }
     | CHAR                   { $$ = ast_new_char(parse_char_literal($1)); free($1); }
     | IDENT LPAREN RPAREN {

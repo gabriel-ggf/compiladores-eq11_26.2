@@ -1,0 +1,36 @@
+#include <stdio.h>
+
+/* Exemplo: Tipos, Coercao e Operadores */
+int main(void) {
+    char *titulo = "Teste de Tipos e Operadores";
+    char nota = 'A';
+    int truncado = 9.85;          // Trunca para 9
+    int div_inteira = 7 / 2;      // Resultado: 3
+    double div_real = 7.0 / 2;    // Resultado: 3.5
+
+    printf("=== %s ===\n", titulo);
+    printf("Conceito: %c | Truncado: %d\n", nota, truncado);
+    printf("Divisao inteira (7/2): %d | Real (7.0/2): %f\n", div_inteira, div_real);
+
+    int a = 10;
+    int b = a++; // b = 10, a = 11
+    int c = ++a; // c = 12, a = 12
+    printf("a = %d, b (a++) = %d, c (++a) = %d\n", a, b, c);
+
+    int acumulador = 20;
+    acumulador += 5;  // 25
+    acumulador -= 3;  // 22
+    acumulador *= 2;  // 44
+    acumulador /= 4;  // 11
+    acumulador %= 4;  // 3
+    printf("Acumulador final: %d\n", acumulador);
+
+    int divisor = 0;
+    if (divisor != 0 && (10 / divisor) > 1) {
+        printf("Nao entra aqui\n");
+    } else if (divisor == 0 || (10 / divisor) > 1) {
+        printf("Curto-circuito logico validado (100%% funcional)!\n");
+    }
+
+    return 0;
+}
