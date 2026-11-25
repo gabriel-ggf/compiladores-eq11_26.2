@@ -1,0 +1,24 @@
+// Teste: divisao inteira x divisao real e conversao na atribuicao
+
+// dois operandos inteiros produzem divisao inteira
+printf("%d\n", 7 / 2);
+
+// com um operando declarado double, a divisao e real
+double a = 7;
+printf("%g\n", a / 2);
+
+// literal com casa decimal tambem forca divisao real
+printf("%g\n", 7.5 / 2);
+
+// atribuir real a inteiro trunca a parte decimal
+int t = 3.9;
+printf("%d\n", t);
+
+// o lado direito e resolvido como divisao inteira antes de virar double
+double p = 7 / 2;
+printf("%g\n", p);
+
+// char guarda o codigo numerico do caractere
+char letra = 66;
+printf("%c\n", letra);
+printf("%d\n", 'A');

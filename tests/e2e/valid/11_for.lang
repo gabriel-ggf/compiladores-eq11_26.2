@@ -1,0 +1,17 @@
+// Teste: laco for crescente, decrescente e com clausulas vazias
+int soma = 0;
+for (int i = 1; i <= 5; i++) {
+    soma += i;
+}
+printf("%d\n", soma);
+
+for (int k = 3; k > 0; k--) {
+    printf("%d\n", k);
+}
+
+// init e incremento vazios: so a condicao
+int n = 0;
+for (; n < 3; ) {
+    n++;
+}
+printf("%d\n", n);

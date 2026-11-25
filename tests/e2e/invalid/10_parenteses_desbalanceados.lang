@@ -1,0 +1,2 @@
+// Teste: parenteses nao fechados devem gerar erro sintatico
+printf("%d\n", (1 + 2;

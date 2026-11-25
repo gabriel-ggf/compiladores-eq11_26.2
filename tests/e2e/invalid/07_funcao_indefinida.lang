@@ -1,0 +1,2 @@
+// Teste: chamar funcao que nao existe deve abortar em runtime
+foo(1);

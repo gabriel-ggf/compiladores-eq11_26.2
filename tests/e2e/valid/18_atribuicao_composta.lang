@@ -1,0 +1,20 @@
+// Teste: atribuicao composta e incremento/decremento (prefixo e sufixo)
+int x = 10;
+x += 5;
+printf("%d\n", x);
+x -= 3;
+printf("%d\n", x);
+x *= 2;
+printf("%d\n", x);
+x /= 4;
+printf("%d\n", x);
+x %= 4;
+printf("%d\n", x);
+
+// sufixo devolve o valor antigo, prefixo devolve o novo
+int i = 5;
+printf("%d\n", i++);
+printf("%d\n", i);
+printf("%d\n", ++i);
+printf("%d\n", i--);
+printf("%d\n", --i);

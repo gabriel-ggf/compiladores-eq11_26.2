@@ -1,4 +1,4 @@
-// Exemplo base adaptado para declaracao tipada
+// Teste: exemplo base do README com declaracao tipada
 double x = 10;
 double y = 20;
 printf("%g\n", x + y);

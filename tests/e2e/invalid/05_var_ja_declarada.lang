@@ -1,0 +1,3 @@
+// Teste: redeclarar a mesma variavel deve gerar erro semantico
+int x = 1;
+int x = 2;
