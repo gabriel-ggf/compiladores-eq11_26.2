@@ -192,8 +192,8 @@ São gerados dois executáveis em `build/`:
 
 Saída esperada:
 
-    Hello World!
-    This is an example.
+    Olá mundo!
+    Aqui está um exemplo básico.
 
 ## Testes
 
