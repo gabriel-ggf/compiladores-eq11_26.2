@@ -50,6 +50,8 @@ A sintaxe é um subconjunto de C. Um programa pode ser escrito direto no nível 
 
 ```c
 // Calcula o fatorial de 5 e mostra os pares ate 10
+#include <stdio.h>
+
 int main() {
     int n = 5;
     int fat = 1;
@@ -81,7 +83,7 @@ int main() {
 | `char` | caractere |
 | `char *` | string |
 
-Variáveis precisam ser declaradas antes do uso e não podem ser redeclaradas — os dois casos geram erro semântico ainda durante o parse.
+Variáveis precisam ser declaradas antes do uso e não podem ser redeclaradas no mesmo escopo — os dois casos geram erro semântico ainda durante o parse. Variáveis declaradas dentro de blocos `{ }` ficam isoladas ao seu respectivo bloco (com suporte a sombreamento de variáveis de escopos externos).
 
 ### Operadores
 
@@ -102,7 +104,7 @@ Precedência e associatividade seguem as de C e estão declaradas em `src/parser
 
 Duas funções embutidas:
 
-- `printf(formato, ...)` — aceita os especificadores `%d` `%i` `%f` `%g` `%c` `%s` e `%%`.
+- `printf(formato, ...)` — aceita os especificadores `%d` `%i` `%f` `%g` `%c` `%s` e `%%` (exige `#include <stdio.h>`).
 - `print(a, b, ...)` — imprime os argumentos na sequência e quebra a linha no final.
 
 ### Literais e comentários
@@ -110,7 +112,7 @@ Duas funções embutidas:
 - Números inteiros e com ponto decimal (`10`, `3.14`).
 - Strings entre aspas duplas e caracteres entre aspas simples, com suporte aos escapes de nova linha, tabulação, retorno de carro, nulo, barra invertida e aspas.
 - Comentários de linha (`// ...`) e de bloco (`/* ... */`).
-- Linhas iniciadas por `#` (diretivas de pré-processador) são ignoradas pelo scanner.
+- A diretiva `#include <stdio.h>` habilita o uso de `printf`; demais diretivas iniciadas por `#` são ignoradas pelo scanner.
 
 ### Erros reportados
 

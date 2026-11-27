@@ -27,7 +27,7 @@ Apresentações e Prazos:
 - [x] Variáveis e atribuição — incluindo atribuição composta (`+=`, `-=`, `*=`, `/=`, `%=`) e `++`/`--`
 - [x] Comando `print` — `print(...)` e `printf(...)` como funções embutidas
 - [x] Estruturas de controle (`if`/`else`, laços) — `if`/`else`, `while`, `do...while`, `for`, `break` e `continue`
-- [ ] Funções / escopos — só a função `main` é aceita; não há funções do usuário nem escopos aninhados
+- [ ] Funções / escopos — escopos aninhados em blocos `{}` implementados; apenas `main` é aceita como função (não há funções definidas pelo usuário)
 - [x] Tipos de dados (inteiro, ponto flutuante, string, booleano) — `int`, `float`/`double`, `char` e `char *` implementados; não há tipo booleano (comparações devolvem inteiro)
 - [x] Tratamento de erros léxicos/sintáticos/semânticos amigável — as três fases reportam erro, com recuperação até o próximo `;` (mensagens de execução ainda estão em inglês)
 - [x] Testes automatizados (ver `tests/`) — suíte em `tests/run_tests.sh` rodando no CI a cada push/PR
