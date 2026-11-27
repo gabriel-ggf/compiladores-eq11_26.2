@@ -1,0 +1,6 @@
+#include <stdio.h>
+// Teste: variavel declarada em bloco {} nao deve ser visivel fora dele
+{
+    int segredo = 42;
+}
+printf("%d\n", segredo);
