@@ -1,3 +1,4 @@
+#include <stdio.h>
 // Teste: divisao por zero deve gerar erro em runtime
 double x = 10;
 double y = 0;

@@ -28,6 +28,7 @@ static node *make_printf(node *expr) {
 
 int main(void) {
     node *programa = ast_new_program();
+    ast_program_set_stdio(programa, 1);
 
     /* x = 10; */
     ast_program_add(programa, ast_new_assign("x", ast_new_number(10)));

@@ -1,3 +1,4 @@
+#include <stdio.h>
 // Teste: os quatro tipos da linguagem e seus especificadores no printf
 int i = 42;
 double d = 3.5;

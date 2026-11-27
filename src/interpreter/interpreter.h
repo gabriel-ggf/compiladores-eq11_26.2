@@ -23,6 +23,7 @@ typedef struct {
     int has_broken;
     int has_continued;
     int loop_depth;
+    int has_stdio;
 } interpreter;
 
 /* Prepara um interpretador com a tabela de simbolos vazia. */

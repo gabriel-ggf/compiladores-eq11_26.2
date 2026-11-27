@@ -1,3 +1,4 @@
+#include <stdio.h>
 // Teste: laco while simples, com condicao falsa de inicio e aninhado
 int i = 0;
 int soma = 0;

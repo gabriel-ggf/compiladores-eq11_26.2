@@ -87,6 +87,7 @@ typedef struct {
     node **statements;
     size_t count;
     size_t capacity;
+    int has_stdio;
 } program_node;
 
 typedef struct {
@@ -187,6 +188,8 @@ node *ast_new_string(const char *value);
 node *ast_new_char(char value);
 
 void ast_program_add(node *program, node *statement);
+void ast_program_set_stdio(node *program, int has_stdio);
+int ast_program_has_stdio(const node *program);
 void ast_free(node *root);
 
 #endif /* AST_H */

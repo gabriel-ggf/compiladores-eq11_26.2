@@ -115,10 +115,27 @@ node *ast_new_program(void) {
     n->as.program.statements = NULL;
     n->as.program.count = 0;
     n->as.program.capacity = 0;
+    n->as.program.has_stdio = 0;
     return n;
 }
 
+void ast_program_set_stdio(node *program, int has_stdio) {
+    if (program != NULL && program->type == NODE_PROGRAM) {
+        program->as.program.has_stdio = has_stdio;
+    }
+}
+
+int ast_program_has_stdio(const node *program) {
+    if (program != NULL && program->type == NODE_PROGRAM) {
+        return program->as.program.has_stdio;
+    }
+    return 0;
+}
+
 void ast_program_add(node *program, node *statement) {
+    if (program == NULL || statement == NULL) {
+        return;
+    }
     program_node *p = &program->as.program;
 
     if (p->count == p->capacity) {
@@ -146,6 +163,9 @@ node *ast_new_block(void) {
 node *ast_block_add(node *block, node *stmt) {
     if (block == NULL) {
         block = ast_new_block();
+    }
+    if (stmt == NULL) {
+        return block;
     }
 
     block_node *b = &block->as.block;

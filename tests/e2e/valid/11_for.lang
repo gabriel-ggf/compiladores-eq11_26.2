@@ -1,3 +1,4 @@
+#include <stdio.h>
 // Teste: laco for crescente, decrescente e com clausulas vazias
 int soma = 0;
 for (int i = 1; i <= 5; i++) {

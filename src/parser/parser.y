@@ -15,6 +15,7 @@ void yyerror(const char *mensagem);
 /* Raiz da AST: preenchida pelo parser, lida pelo main.c / interpretador. */
 node *root_node = NULL;
 int parse_errors = 0;
+static int has_stdio = 0;
 
 /* Tratamento de Escapes. */
 static char parse_char_literal(const char *lit) {
@@ -64,6 +65,7 @@ static node *make_compound_assign(const char *name, int op, node *rhs) {
 %token BITWISE_AND_ASSIGN BITWISE_OR_ASSIGN BITWISE_XOR_ASSIGN
 %token BITWISE_AND BITWISE_OR BITWISE_XOR BITWISE_NOT
 %token KW_VOID KW_STRUCT KW_UNION KW_ENUM
+%token INCLUDE_STDIO
 %token LEX_ERROR
 
 %precedence THEN
@@ -84,9 +86,10 @@ static node *make_compound_assign(const char *name, int op, node *rhs) {
 %%
 
 input:
-      %empty                    { root_node = ast_new_program(); $$ = root_node; }
+      %empty                    { root_node = ast_new_program(); has_stdio = 0; $$ = root_node; }
+    | input INCLUDE_STDIO       { ast_program_set_stdio($1, 1); has_stdio = 1; $$ = $1; }
     | input func_def            { if ($2 != NULL) ast_program_add($1, $2); $$ = $1; }
-    | input stmt                { ast_program_add($1, $2); $$ = $1; }
+    | input stmt                { if ($2 != NULL) ast_program_add($1, $2); $$ = $1; }
     | input error SEMICOLON     {
           fprintf(stderr, "[Erro Sintatico] Erro recuperado ate ';'\n");
           yyerrok;
@@ -324,10 +327,21 @@ expr:
     | STRING                 { $$ = ast_new_string($1); free($1); }
     | CHAR                   { $$ = ast_new_char(parse_char_literal($1)); free($1); }
     | IDENT LPAREN RPAREN {
+          if (strcmp($1, "printf") == 0 && !has_stdio) {
+              yyerror("Erro Semantico: uso de 'printf' sem #include <stdio.h>");
+              free($1);
+              YYERROR;
+          }
           $$ = ast_new_call($1);
           free($1);
       }
     | IDENT LPAREN arg_list RPAREN {
+          if (strcmp($1, "printf") == 0 && !has_stdio) {
+              yyerror("Erro Semantico: uso de 'printf' sem #include <stdio.h>");
+              free($1);
+              ast_free($3);
+              YYERROR;
+          }
           free($3->as.call.name);
           $3->as.call.name = $1;
           $$ = $3;

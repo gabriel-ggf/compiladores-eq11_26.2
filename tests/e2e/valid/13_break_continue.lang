@@ -1,3 +1,4 @@
+#include <stdio.h>
 // Teste: break interrompe o laco e continue pula para a proxima iteracao
 int i = 0;
 while (1) {

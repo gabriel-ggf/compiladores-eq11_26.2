@@ -337,6 +337,9 @@ static runtime_value evaluate(interpreter *interp, node *n) {
 
         case NODE_CALL: {
             if (strcmp(n->as.call.name, "printf") == 0) {
+                if (!interp->has_stdio) {
+                    runtime_error("Undefined function: printf (missing #include <stdio.h>)");
+                }
                 if (n->as.call.arg_count == 0) {
                     runtime_error("printf expects at least 1 argument");
                 }
@@ -538,6 +541,7 @@ void interpreter_init(interpreter *interp) {
     interp->has_broken = 0;
     interp->has_continued = 0;
     interp->loop_depth = 0;
+    interp->has_stdio = 0;
 }
 
 void interpreter_run(interpreter *interp, node *program) {
@@ -545,6 +549,7 @@ void interpreter_run(interpreter *interp, node *program) {
         runtime_error("Invalid root: expected a program node");
     }
 
+    interp->has_stdio = ast_program_has_stdio(program);
     for (size_t i = 0; i < program->as.program.count && !interp->has_returned; i++) {
         execute(interp, program->as.program.statements[i]);
     }
