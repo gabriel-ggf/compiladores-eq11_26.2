@@ -135,12 +135,17 @@ void ast_program_add(node *program, node *statement) {
     p->statements[p->count++] = statement;
 }
 
+node *ast_new_block(void) {
+    node *n = new_node(NODE_BLOCK);
+    n->as.block.statements = NULL;
+    n->as.block.count = 0;
+    n->as.block.capacity = 0;
+    return n;
+}
+
 node *ast_block_add(node *block, node *stmt) {
     if (block == NULL) {
-        block = new_node(NODE_BLOCK);
-        block->as.block.statements = NULL;
-        block->as.block.count = 0;
-        block->as.block.capacity = 0;
+        block = ast_new_block();
     }
 
     block_node *b = &block->as.block;

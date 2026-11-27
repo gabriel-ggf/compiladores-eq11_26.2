@@ -77,7 +77,7 @@ static node *make_compound_assign(const char *name, int op, node *rhs) {
 %left TIMES DIVIDE MODULE
 %right NOT UMINUS
 
-%type <n> input stmt expr stmt_list arg_list func_def for_init for_cond for_inc
+%type <n> input stmt expr stmt_list arg_list func_def for_init for_cond for_inc block
 
 %start input
 
@@ -96,7 +96,19 @@ input:
     ;
 
 func_def:
-      KW_TYPE IDENT LPAREN RPAREN LBRACE stmt_list RBRACE {
+      KW_TYPE IDENT LPAREN RPAREN block {
+          if (strcmp($2, "main") != 0) {
+              yyerror("Erro Semantico: apenas a funcao 'main' e suportada no momento");
+              free($1);
+              free($2);
+              ast_free($5);
+              YYERROR;
+          }
+          free($1);
+          free($2);
+          $$ = $5;
+      }
+    | KW_TYPE IDENT LPAREN KW_VOID RPAREN block {
           if (strcmp($2, "main") != 0) {
               yyerror("Erro Semantico: apenas a funcao 'main' e suportada no momento");
               free($1);
@@ -108,17 +120,16 @@ func_def:
           free($2);
           $$ = $6;
       }
-    | KW_TYPE IDENT LPAREN KW_VOID RPAREN LBRACE stmt_list RBRACE {
-          if (strcmp($2, "main") != 0) {
-              yyerror("Erro Semantico: apenas a funcao 'main' e suportada no momento");
-              free($1);
-              free($2);
-              ast_free($7);
-              YYERROR;
-          }
-          free($1);
-          free($2);
-          $$ = $7;
+    ;
+
+block_open:
+      LBRACE                    { enter_scope(); }
+    ;
+
+block:
+      block_open stmt_list RBRACE {
+          exit_scope();
+          $$ = ($2 != NULL) ? $2 : ast_new_block();
       }
     ;
 
@@ -189,7 +200,7 @@ stmt:
       }
     | KW_RETURN expr SEMICOLON                    { $$ = ast_new_return($2); }
     | KW_RETURN SEMICOLON                         { $$ = ast_new_return(NULL); }
-    | LBRACE stmt_list RBRACE                     { $$ = $2; }
+    | block                                       { $$ = $1; }
     | KW_IF LPAREN expr RPAREN stmt %prec THEN    { $$ = ast_new_if($3, $5, NULL); }
     | KW_IF LPAREN expr RPAREN stmt KW_ELSE stmt  { $$ = ast_new_if($3, $5, $7); }
     | KW_DO stmt KW_WHILE LPAREN expr RPAREN SEMICOLON {
