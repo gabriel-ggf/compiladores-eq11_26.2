@@ -138,8 +138,11 @@ Duas funções embutidas:
     │   │   ├── ast.h / ast.c       # nós da AST e funções de criação/liberação
     │   │   └── table.h / table.c   # tabela de símbolos do parser (análise semântica)
     │   └── interpreter/
-    │       ├── interpreter.h
-    │       └── interpreter.c       # percorre a AST e executa o programa
+    │   │   ├── interpreter.h
+    │   │   └── interpreter.c       # percorre a AST e executa o programa
+    │   └── optimizer/
+    │   │   ├── optimizer.h         
+    │   │   └── optimizer.c         # otimização de simplificação de operações com constantes conhecidas
     ├── examples/
     │   └── exemplo1.lang           # programa de exemplo na linguagem
     ├── tests/                      # suíte automatizada (ver tests/README.md)
