@@ -55,11 +55,12 @@ O projeto mantém **duas** tabelas de símbolos, de propósito. Elas respondem a
 - Erros sintáticos têm recuperação: a regra `input: input error SEMICOLON` do Bison descarta tokens até o próximo `;` e continua o parse, de modo que um arquivo com vários erros reporta vários erros em uma só execução, em vez de parar no primeiro.
 - O `main.c` só executa a AST se o parse terminou sem erros (`parse_errors == 0`), para não interpretar uma árvore incompleta.
 
-## Escopo da linguagem: só a função `main`
+## Escopo da linguagem: só a função `main` e isolamento em blocos `{}`
 
 - O parser aceita a definição de uma única função, `main`, e qualquer outro nome é recusado com erro semântico. Programas também podem ser escritos direto no nível do arquivo, sem `main`.
-- **Motivo:** funções definidas pelo usuário exigiriam tabela de símbolos com escopos aninhados, pilha de chamadas e passagem de parâmetros — o que não cabe no prazo da disciplina. Manter a restrição explícita é melhor do que aceitar a sintaxe e falhar de forma confusa na execução.
-- `printf` e `print` são as únicas funções chamáveis, implementadas direto no interpretador como embutidas.
+- **Motivo:** funções definidas pelo usuário exigiriam pilha de chamadas e passagem de parâmetros — o que não cabe no prazo da disciplina. Manter a restrição explícita é melhor do que aceitar a sintaxe e falhar de forma confusa na execução.
+- **Escopo por blocos `{}`:** variáveis declaradas dentro de blocos `{}` são isoladas ao respectivo bloco (tanto na tabela de símbolos do parser quanto na do interpretador), permitindo reutilização de nomes em blocos irmãos e sombreamento (*shadowing*) de variáveis externas.
+- `printf` e `print` são as únicas funções chamáveis, implementadas direto no interpretador como embutidas; o uso de `printf` exige a presença prévia de `#include <stdio.h>`.
 
 ## Testes automatizados e CI
 
@@ -71,6 +72,6 @@ O projeto mantém **duas** tabelas de símbolos, de propósito. Elas respondem a
 ## Convenções de código
 
 - Nomes de arquivos/structs em `snake_case` (ex: `binary_op_node`, `interpreter`), alinhado com as práticas comuns da linguagem C.
-- Cada módulo (`ast`, `interpreter`, `lexer`, `parser`) fica em sua própria pasta dentro de `src/`.
+- Cada módulo (`ast`, `interpreter`, `lexer`, `optimizer`, `parser`) fica em sua própria pasta dentro de `src/`.
 
 > Atualizem este documento conforme novas decisões forem tomadas ao longo das sprints — é um dos itens avaliados na entrevista final.

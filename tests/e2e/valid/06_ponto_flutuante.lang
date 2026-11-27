@@ -1,3 +1,4 @@
+#include <stdio.h>
 // Teste: expressoes com ponto flutuante
 double a = 3.14;
 double b = 2.0;

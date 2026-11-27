@@ -1,3 +1,4 @@
+#include <stdio.h>
 // Teste: do-while executa o corpo ao menos uma vez
 int i = 10;
 do {

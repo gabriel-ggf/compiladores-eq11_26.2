@@ -102,6 +102,7 @@ auto|extern|register|static|typedef { return KW_STORAGE; }
 \'([^'\\]|\\.)\'                     { yylval.str = copy_text(yytext); return CHAR; }
 [a-zA-Z_][a-zA-Z0-9_]*               { yylval.str = copy_text(yytext); return IDENT; }
 
+^[ \t]*#[ \t]*include[ \t]*[<"][ \t]*stdio\.h[ \t]*[>"][^\r\n]* { return INCLUDE_STDIO; }
 ^[ \t]*#.*                           { /* ignora diretivas de pre-processador */ }
 "//".*                               { /* ignora comentario de linha unica */ }
 "/*"([^*]|\*+[^*/])*\*+"/"           { /* ignora comentario de bloco (multilinha) */ }

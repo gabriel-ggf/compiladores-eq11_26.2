@@ -27,7 +27,7 @@ Apresentações e Prazos:
 - [x] Variáveis e atribuição — incluindo atribuição composta (`+=`, `-=`, `*=`, `/=`, `%=`) e `++`/`--`
 - [x] Comando `print` — `print(...)` e `printf(...)` como funções embutidas
 - [x] Estruturas de controle (`if`/`else`, laços) — `if`/`else`, `while`, `do...while`, `for`, `break` e `continue`
-- [ ] Funções / escopos — só a função `main` é aceita; não há funções do usuário nem escopos aninhados
+- [ ] Funções / escopos — escopos aninhados em blocos `{}` implementados; apenas `main` é aceita como função (não há funções definidas pelo usuário)
 - [x] Tipos de dados (inteiro, ponto flutuante, string, booleano) — `int`, `float`/`double`, `char` e `char *` implementados; não há tipo booleano (comparações devolvem inteiro)
 - [x] Tratamento de erros léxicos/sintáticos/semânticos amigável — as três fases reportam erro, com recuperação até o próximo `;` (mensagens de execução ainda estão em inglês)
 - [x] Testes automatizados (ver `tests/`) — suíte em `tests/run_tests.sh` rodando no CI a cada push/PR
@@ -47,7 +47,7 @@ Apresentações e Prazos:
 | Sprint 5 | 14/10 - 28/10 | - Desevolvimento da AST, tabela de símbolos e interpretador.<br>- Conversão de arquivos de C++ para C.<br>- Preparação para a apresentação P2. | Concluido |
 | Sprint 6 | 28/10 - 11/11 | - Ligação entre os arquivos de análise léxica, sintática, semântica e interpretador.<br>- Desenvolvimento de mais casos de testes. | Concluido |
 | Sprint 7 | 11/11 - 18/11 | - Automatização dos casos de teste.<br>- Expansão da análise semântica para incluir mais tokens. | Concluido |
-| Sprint 8 | 18/11 - 27/11 | - Atualização final na documentação.<br>- Correção de bugs.<br>- Otimização do código. | Em Andamento |
+| Sprint 8 | 18/11 - 27/11 | - Atualização final na documentação.<br>- Correção de bugs.<br>- Otimização do código. | Concluido |
 
 > O periodo de cada sprint foi variado devido a diferentes fatores. Os principais foram entregas da disciplina e dificuldade entre alinhamento de atividades entre os membros da equipe, sendo o principal caso a Sprint 3. Algumas sprints tiveram um escopo maior e tiveram que ser espandidas por dificuldades técnicas.
 > Algumas entregas foram extendidas ou atrasados, suas datas podem não está alinhadas com as issues ou pull requests.

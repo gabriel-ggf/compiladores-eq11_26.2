@@ -1,3 +1,4 @@
+#include <stdio.h>
 // Teste: divisao e modulo
 double a = 10;
 double b = 3;

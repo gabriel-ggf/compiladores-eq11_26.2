@@ -1,3 +1,4 @@
+#include <stdio.h>
 // Teste: multiplas variaveis e reatribuicao
 double x = 1;
 double y = 2;

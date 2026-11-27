@@ -1,3 +1,4 @@
+#include <stdio.h>
 // Teste: operacoes aritmeticas basicas com declaracao
 double a = 5;
 double b = 3;

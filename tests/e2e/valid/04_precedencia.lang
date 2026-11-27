@@ -1,3 +1,4 @@
+#include <stdio.h>
 // Teste: precedencia de operadores e parenteses
 printf("%g\n", 2 + 3 * 4);
 printf("%g\n", (2 + 3) * 4);

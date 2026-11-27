@@ -18,6 +18,7 @@ typedef struct {
 struct symbol {
     char *name;
     data_type type;
+    int scope_level;
     union {
         long i;
         double d;
@@ -145,8 +146,37 @@ static runtime_value read_symbol_value(symbol *sym) {
     return make_int(0);
 }
 
+static void enter_runtime_scope(interpreter *interp) {
+    interp->scope_level++;
+}
+
+static void exit_runtime_scope(interpreter *interp) {
+    int target_scope = interp->scope_level;
+    while (interp->symbols != NULL && interp->symbols->scope_level >= target_scope) {
+        symbol *next = interp->symbols->next;
+        if (interp->symbols->type == TYPE_STRING) {
+            free(interp->symbols->as.s);
+        }
+        free(interp->symbols->name);
+        free(interp->symbols);
+        interp->symbols = next;
+    }
+    if (interp->scope_level > 0) {
+        interp->scope_level--;
+    }
+}
+
+static symbol *search_symbol_current_scope(interpreter *interp, const char *name) {
+    for (symbol *current = interp->symbols; current != NULL && current->scope_level == interp->scope_level; current = current->next) {
+        if (strcmp(current->name, name) == 0) {
+            return current;
+        }
+    }
+    return NULL;
+}
+
 static void declare_symbol(interpreter *interp, const char *name, data_type type, int has_init, runtime_value init_val) {
-    symbol *sym = search_symbol(interp, name);
+    symbol *sym = search_symbol_current_scope(interp, name);
     if (sym == NULL) {
         sym = malloc(sizeof *sym);
         if (sym == NULL) {
@@ -154,6 +184,7 @@ static void declare_symbol(interpreter *interp, const char *name, data_type type
         }
         sym->name = copy_text(name);
         sym->type = type;
+        sym->scope_level = interp->scope_level;
         sym->as.s = NULL;
         sym->next = interp->symbols;
         interp->symbols = sym;
@@ -306,6 +337,9 @@ static runtime_value evaluate(interpreter *interp, node *n) {
 
         case NODE_CALL: {
             if (strcmp(n->as.call.name, "printf") == 0) {
+                if (!interp->has_stdio) {
+                    runtime_error("Undefined function: printf (missing #include <stdio.h>)");
+                }
                 if (n->as.call.arg_count == 0) {
                     runtime_error("printf expects at least 1 argument");
                 }
@@ -392,11 +426,13 @@ static void execute(interpreter *interp, node *n) {
         }
 
         case NODE_BLOCK:
+            enter_runtime_scope(interp);
             for (size_t i = 0;
                  i < n->as.block.count && !interp->has_returned && !interp->has_broken && !interp->has_continued;
                  i++) {
                 execute(interp, n->as.block.statements[i]);
             }
+            exit_runtime_scope(interp);
             break;
 
         case NODE_IF:
@@ -500,10 +536,12 @@ static void execute(interpreter *interp, node *n) {
 
 void interpreter_init(interpreter *interp) {
     interp->symbols = NULL;
+    interp->scope_level = 0;
     interp->has_returned = 0;
     interp->has_broken = 0;
     interp->has_continued = 0;
     interp->loop_depth = 0;
+    interp->has_stdio = 0;
 }
 
 void interpreter_run(interpreter *interp, node *program) {
@@ -511,6 +549,7 @@ void interpreter_run(interpreter *interp, node *program) {
         runtime_error("Invalid root: expected a program node");
     }
 
+    interp->has_stdio = ast_program_has_stdio(program);
     for (size_t i = 0; i < program->as.program.count && !interp->has_returned; i++) {
         execute(interp, program->as.program.statements[i]);
     }
@@ -528,4 +567,5 @@ void interpreter_destroy(interpreter *interp) {
         current = next;
     }
     interp->symbols = NULL;
+    interp->scope_level = 0;
 }

@@ -1,9 +1,8 @@
 /*
  * Teste simples do nucleo convertido para C (AST + interpretador).
  *
- * Monta na mao a mesma AST que o parser deve produzir para
- * examples/exemplo1.lang e executa, conferindo a saida documentada no
- * README:
+ * Monta na mao uma AST com atribuicoes e expressoes aritmeticas e executa,
+ * conferindo a saida esperada pelo runner de testes:
  *
  *     30
  *     60
@@ -28,6 +27,7 @@ static node *make_printf(node *expr) {
 
 int main(void) {
     node *programa = ast_new_program();
+    ast_program_set_stdio(programa, 1);
 
     /* x = 10; */
     ast_program_add(programa, ast_new_assign("x", ast_new_number(10)));

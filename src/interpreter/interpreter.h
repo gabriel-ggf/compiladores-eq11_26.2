@@ -18,10 +18,12 @@ typedef struct symbol symbol;
 
 typedef struct {
     symbol *symbols; /* tabela de simbolos: nome -> valor tipado */
+    int scope_level;
     int has_returned;
     int has_broken;
     int has_continued;
     int loop_depth;
+    int has_stdio;
 } interpreter;
 
 /* Prepara um interpretador com a tabela de simbolos vazia. */

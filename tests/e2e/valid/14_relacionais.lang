@@ -1,3 +1,4 @@
+#include <stdio.h>
 // Teste: operadores relacionais devolvem 1 para verdadeiro e 0 para falso
 int a = 5;
 int b = 3;

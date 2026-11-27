@@ -1,0 +1,52 @@
+#include <stdio.h>
+// Teste: isolamento de variaveis criadas dentro de blocos {}
+int global = 10;
+
+// 1. Variaveis declaradas no bloco nao vazam para fora
+{
+    int local = 20;
+    printf("%d %d\n", global, local);
+}
+
+// 2. Modificacao de variavel externa dentro de bloco persiste
+{
+    global = 50;
+}
+printf("%d\n", global);
+
+// 3. Sombreamento (shadowing): variavel interna mascara a externa e ao sair a externa volta intacta
+int x = 100;
+{
+    int x = 200;
+    printf("%d\n", x);
+}
+printf("%d\n", x);
+
+// 4. Blocos irmaos podem declarar variaveis com o mesmo nome
+{
+    int temp = 1;
+    printf("%d\n", temp);
+}
+{
+    int temp = 2;
+    printf("%d\n", temp);
+}
+
+// 5. Blocos aninhados
+{
+    int a = 11;
+    {
+        int b = 22;
+        {
+            int c = 33;
+            printf("%d %d %d\n", a, b, c);
+        }
+        printf("%d %d\n", a, b);
+    }
+    printf("%d\n", a);
+}
+
+// 6. Bloco vazio
+{
+}
+printf("%d\n", global);

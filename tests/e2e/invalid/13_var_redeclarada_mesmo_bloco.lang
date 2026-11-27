@@ -1,0 +1,5 @@
+// Teste: redeclarar variavel dentro do mesmo bloco {} e erro semantico
+{
+    int repetido = 10;
+    int repetido = 20;
+}

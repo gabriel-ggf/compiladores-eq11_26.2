@@ -1,3 +1,4 @@
+#include <stdio.h>
 // Teste: divisao inteira x divisao real e conversao na atribuicao
 
 // dois operandos inteiros produzem divisao inteira

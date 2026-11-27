@@ -14,6 +14,7 @@
 #include "ast/ast.h"
 #include "ast/table.h"
 #include "interpreter/interpreter.h"
+#include "optimizer/optimizer.h"
 
 extern int yyparse(void);
 extern FILE *yyin;
@@ -42,6 +43,8 @@ int main(int argc, char **argv) {
         freeTable();
         return 1;
     }
+
+    root_node = optimizer_optimize(root_node);
 
     interpreter interp;
     interpreter_init(&interp);
