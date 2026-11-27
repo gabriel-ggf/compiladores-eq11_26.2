@@ -1,9 +1,8 @@
 /*
  * Teste simples do nucleo convertido para C (AST + interpretador).
  *
- * Monta na mao a mesma AST que o parser deve produzir para
- * examples/exemplo1.lang e executa, conferindo a saida documentada no
- * README:
+ * Monta na mao uma AST com atribuicoes e expressoes aritmeticas e executa,
+ * conferindo a saida esperada pelo runner de testes:
  *
  *     30
  *     60

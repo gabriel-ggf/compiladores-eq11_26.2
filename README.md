@@ -40,6 +40,9 @@ O pipeline é o clássico de compiladores/interpretadores:
       Análise Sintática   (Bison)     →  Árvore Sintática Abstrata (AST)
             │
             ▼
+      Otimização          (C)         →  simplificação de constantes na AST
+            │
+            ▼
       Interpretação       (C)         →  execução direta da AST
 
 A análise semântica acontece em dois momentos: durante o parse, uma tabela de símbolos (`src/ast/table.c`) verifica declaração e redeclaração de variáveis; em tempo de execução, o interpretador mantém a própria tabela, com os valores já tipados.
@@ -137,14 +140,13 @@ Duas funções embutidas:
     │   ├── ast/
     │   │   ├── ast.h / ast.c       # nós da AST e funções de criação/liberação
     │   │   └── table.h / table.c   # tabela de símbolos do parser (análise semântica)
-    │   └── interpreter/
+    │   ├── interpreter/
     │   │   ├── interpreter.h
     │   │   └── interpreter.c       # percorre a AST e executa o programa
     │   └── optimizer/
-    │   │   ├── optimizer.h         
-    │   │   └── optimizer.c         # otimização de simplificação de operações com constantes conhecidas
-    ├── examples/
-    │   └── exemplo1.lang           # programa de exemplo na linguagem
+    │       ├── optimizer.h
+    │       └── optimizer.c         # otimização de simplificação de operações com constantes conhecidas
+    ├── examples/                   # programas de exemplo na linguagem (exemplo1.lang a exemplo4.lang)
     ├── tests/                      # suíte automatizada (ver tests/README.md)
     │   ├── run_tests.sh            # runner dos testes
     │   ├── e2e/valid/              # programas válidos + saída esperada

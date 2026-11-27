@@ -1,4 +1,4 @@
-# Ata da Sprint X
+# Ata da Sprint 8
 
 - Data Inicial: **18/11/2026**
 - Data de Conclusão: **27/11/2026**

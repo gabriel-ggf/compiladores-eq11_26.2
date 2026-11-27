@@ -72,6 +72,6 @@ O projeto mantém **duas** tabelas de símbolos, de propósito. Elas respondem a
 ## Convenções de código
 
 - Nomes de arquivos/structs em `snake_case` (ex: `binary_op_node`, `interpreter`), alinhado com as práticas comuns da linguagem C.
-- Cada módulo (`ast`, `interpreter`, `lexer`, `parser`) fica em sua própria pasta dentro de `src/`.
+- Cada módulo (`ast`, `interpreter`, `lexer`, `optimizer`, `parser`) fica em sua própria pasta dentro de `src/`.
 
 > Atualizem este documento conforme novas decisões forem tomadas ao longo das sprints — é um dos itens avaliados na entrevista final.
