@@ -34,6 +34,7 @@ add_library(nucleo STATIC
     src/ast/ast.c
     src/ast/table.c
     src/interpreter/interpreter.c
+    src/optimizer/optimizer.c
 )
 target_include_directories(nucleo PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
